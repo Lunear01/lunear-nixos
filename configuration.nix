@@ -9,6 +9,7 @@
  
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "lunear-nixos";
@@ -66,6 +67,14 @@
      overskride
      claude-code
    ];
+
+  # Automatic Generation Clean up, keeping only most recent 3 generations
+  nix.gc = {
+  automatic = true;
+  dates = "daily";
+  options = "--delete-generations +3";
+};
+
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "26.05";
