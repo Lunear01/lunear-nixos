@@ -82,6 +82,8 @@ in
 
         # Dev tools
         claude-code
+        nodejs_22
+        gh
 
         # Fonts
         nerd-fonts.jetbrains-mono
