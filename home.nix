@@ -42,7 +42,15 @@
     home.packages = [ pkgs.wallust ];
 
     # Services
-    services.swaync.enable = true;
+    services.swaync = {
+        enable = true;
+        settings = {
+            positionX = "left";
+            positionY = "top";
+            control-center-positionX = "left";
+            control-center-positionY = "top";
+        };
+    };
     services.cliphist.enable = true;
     services.playerctld.enable = true;
 
