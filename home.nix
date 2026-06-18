@@ -142,6 +142,7 @@ in
         "wallust/templates".source = ./hyprland-config/wallust/templates;
         "kitty/session.conf".source = ./hyprland-config/kitty/session.conf;
         "swaync/style.css".source = themed ./hyprland-config/swaync/style.css;
+        "rofi/wallpaper.rasi".source = themed ./hyprland-config/rofi/wallpaper.rasi;
 
         # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
         "hypr/scripts/theme.sh" = {
