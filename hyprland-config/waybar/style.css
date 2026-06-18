@@ -46,13 +46,41 @@ window#waybar {
  * the very top give the panes a wet, glassy sheen — without a full-height
  * gradient banding across the body. */
 .modules-left,
-.modules-center,
-.modules-right {
+.modules-center {
     background: @bg;
     border: 1px solid @border;
     border-radius: 16px;
     padding: 2px 6px;
     margin: 0 4px;
+    box-shadow: inset 0 1px 0 0 @sheen;
+}
+
+/* The right cluster is a transparent rail; the grouped pills below are the
+ * visible containers, so related controls read as tidy clusters instead of one
+ * crowded strip. */
+.modules-right {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0 4px;
+}
+
+/* Liquid-glass pills for the right-side groups + standalone battery. Group
+ * containers (#controls etc.) get their own padding; #battery keeps the leaf
+ * padding from the rule below, so only the glass surface is added here. */
+#expand,
+#controls,
+#connectivity {
+    background: @bg;
+    border: 1px solid @border;
+    border-radius: 14px;
+    padding: 2px 2px;
+    margin: 0 4px;
+    box-shadow: inset 0 1px 0 0 @sheen;
+}
+#battery {
+    background: @bg;
+    border: 1px solid @border;
     box-shadow: inset 0 1px 0 0 @sheen;
 }
 

@@ -9,7 +9,7 @@
         "reload_style_on_change": true,
         "modules-left": ["custom/clipboard", "clock", "custom/notification"],
         "modules-center": ["hyprland/workspaces"],
-        "modules-right": ["group/expand", "backlight", "pulseaudio", "bluetooth", "network", "battery", "tray"],
+        "modules-right": ["group/expand", "group/controls", "group/connectivity", "battery", "tray"],
 
         "hyprland/workspaces": {
             "format": "{name}",
@@ -101,7 +101,7 @@
             "format-ethernet": "󰈀  Wired",
             "format-disconnected": "󰖪  Offline",
             "format-linked": "󰖩  {ifname} (No IP)",
-            "max-length": 18,
+            "max-length": 24,
             "tooltip-format-wifi": "{essid}  ({signalStrength}%)\n{ipaddr}\n{frequency} GHz",
             "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
             "tooltip-format-disconnected": "Disconnected",
@@ -156,6 +156,14 @@
                 "click-to-reveal": true
             },
             "modules": ["custom/expand", "cpu", "memory", "temperature", "custom/endpoint"]
+        },
+        "group/controls": {
+            "orientation": "horizontal",
+            "modules": ["backlight", "pulseaudio"]
+        },
+        "group/connectivity": {
+            "orientation": "horizontal",
+            "modules": ["network", "bluetooth"]
         },
         "cpu": {
             "format": "󰻠  {usage}%",
