@@ -6,7 +6,7 @@
  * change; it defines @background/@foreground/@color0..15. We map those onto the
  * semantic names used below — re-assign here to change which wallpaper color
  * goes where. warning/critical stay fixed so battery alerts are always legible. */
-@import "/home/lunear/.cache/wal/colors-waybar.css";
+@import "@home@/.cache/wal/colors-waybar.css";
 
 /* ── Semantic palette ─────────────────────────────────────────────────────
  * Everything below references these, so re-theming = editing this block.    */

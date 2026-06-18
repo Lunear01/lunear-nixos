@@ -8,7 +8,7 @@
  * "rofi" namespace, see hypr/hyprland.lua). transparency:"real" lets the
  * compositor composite the alpha rather than rofi faking it.
  * Deployed live via Home Manager out-of-store symlink. */
-@import "/home/lunear/.cache/wal/colors-rofi.rasi"
+@import "@home@/.cache/wal/colors-rofi.rasi"
 
 * {
     font:             "JetBrainsMono Nerd Font 11";

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # wallpaper-picker.sh — pick a wallpaper from ~/wallpapers via rofi, then theme.
-# Bound to SUPER+W in hypr/hyprland.lua.
+# Bound to SUPER+SHIFT+W in hypr/hyprland.lua.
 set -euo pipefail
 
 dir="$HOME/wallpapers"

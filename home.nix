@@ -1,8 +1,14 @@
 {config, pkgs, lib, ...}:
 
+let
+    home = config.home.homeDirectory;
+    # Copy a repo dotfile into the store, substituting @home@ with the real
+    # home directory so nothing hardcodes a username/path.
+    themed = src: pkgs.replaceVars src { inherit home; };
+in
 {
     home.username = "lunear";
-    home.homeDirectory = "/home/lunear";
+    home.homeDirectory = "/home/${config.home.username}";
     home.stateVersion = "26.05";
 
 
@@ -23,17 +29,17 @@
     programs.kitty = {
         enable = true;
         extraConfig = ''
-            include /home/lunear/.cache/wal/colors-kitty.conf
-            # Liquid glass: let the (blurred) desktop show through; allows live
-            # opacity tweaks. Run fastfetch on every launch via the session file.
+            include ${home}/.cache/wal/colors-kitty.conf
             dynamic_background_opacity yes
-            startup_session /home/lunear/.config/kitty/session.conf
+            startup_session ${home}/.config/kitty/session.conf
         '';
     };
     programs.rofi = {
         enable = true;
         # Layout lives in the repo; colors come from the wallpaper via wallust.
-        theme = "/home/lunear/.config/rofi/theme.rasi";
+        # Coerce to the store-path string: the rofi module treats a string as a
+        # theme path, but a derivation as an inline rasi attrset.
+        theme = "${themed ./hyprland-config/rofi/theme.rasi}";
     };
     programs.fastfetch.enable = true;
     programs.vscode.enable = true;
@@ -78,14 +84,13 @@
     xdg.configFile = {
         "hypr/hyprland.lua".source = ./hyprland-config/hypr/hyprland.lua;
         "waybar/config.jsonc".source = ./hyprland-config/waybar/config.jsonc;
-        "waybar/style.css".source = ./hyprland-config/waybar/style.css;
+        "waybar/style.css".source = themed ./hyprland-config/waybar/style.css;
 
         # Pywal-style theming via wallust: wallpaper -> palette -> every app.
-        "wallust/wallust.toml".source = ./hyprland-config/wallust/wallust.toml;
+        "wallust/wallust.toml".source = themed ./hyprland-config/wallust/wallust.toml;
         "wallust/templates".source = ./hyprland-config/wallust/templates;
-        "rofi/theme.rasi".source = ./hyprland-config/rofi/theme.rasi;
         "kitty/session.conf".source = ./hyprland-config/kitty/session.conf;
-        "swaync/style.css".source = ./hyprland-config/swaync/style.css;
+        "swaync/style.css".source = themed ./hyprland-config/swaync/style.css;
 
         # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
         "hypr/scripts/theme.sh" = {

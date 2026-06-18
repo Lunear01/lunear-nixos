@@ -14,16 +14,16 @@ palette     = "dark16"    # 16 colors on a dark background
 # Single quotes so backslashes/tildes are left literal (per wallust docs).
 [templates]
 hyprland.template = 'colors-hyprland.lua'
-hyprland.target   = '/home/lunear/.cache/wal/colors-hyprland.lua'
+hyprland.target   = '@home@/.cache/wal/colors-hyprland.lua'
 
 waybar.template = 'colors-waybar.css'
-waybar.target   = '/home/lunear/.cache/wal/colors-waybar.css'
+waybar.target   = '@home@/.cache/wal/colors-waybar.css'
 
 kitty.template = 'colors-kitty.conf'
-kitty.target   = '/home/lunear/.cache/wal/colors-kitty.conf'
+kitty.target   = '@home@/.cache/wal/colors-kitty.conf'
 
 rofi.template = 'colors-rofi.rasi'
-rofi.target   = '/home/lunear/.cache/wal/colors-rofi.rasi'
+rofi.target   = '@home@/.cache/wal/colors-rofi.rasi'
 
 swaync.template = 'colors-swaync.css'
-swaync.target   = '/home/lunear/.cache/wal/colors-swaync.css'
+swaync.target   = '@home@/.cache/wal/colors-swaync.css'

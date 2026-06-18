@@ -13,6 +13,8 @@
 
   networking.hostName = "lunear-nixos";
   networking.networkmanager.enable = true;
+
+  # ProtonVPN Tweak
   networking.firewall.checkReversePath = false;
 
   hardware.bluetooth.enable = true;
@@ -24,9 +26,9 @@
 
   services.displayManager.gdm.enable = true;
 
-  # Allow Nautilus to detect and mount external drives (USB sticks, SD cards, etc.)
-  services.udisks2.enable = true; # block device detection + mounting backend
-  services.gvfs.enable = true;    # virtual filesystem layer Nautilus uses to browse/mount
+  # Allow Nautilus to detect and mount external drives
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
 
   programs.hyprland = {
       enable = true;

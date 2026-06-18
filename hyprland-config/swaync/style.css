@@ -3,7 +3,7 @@
  * @foreground/@background/@accent/@accent-alt/@urgent/@surface.
  * Deployed live via Home Manager out-of-store symlink;
  * reload with: swaync-client --reload-css */
-@import "/home/lunear/.cache/wal/colors-swaync.css";
+@import "@home@/.cache/wal/colors-swaync.css";
 
 * {
     font-family: "JetBrainsMono Nerd Font", sans-serif;
