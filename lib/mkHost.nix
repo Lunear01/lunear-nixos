@@ -9,6 +9,7 @@ inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
     inputs.nix-flatpak.nixosModules.nix-flatpak
+    ../modules/nixos
     ../hosts/${hostname}
     inputs.home-manager.nixosModules.home-manager
     {
@@ -24,5 +25,5 @@ inputs.nixpkgs.lib.nixosSystem {
       nix.registry.nixpkgs.flake = inputs.nixpkgs;
       nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     }
-  ];
+  ] ++ map (u: ../users/${u}/default.nix) users;
 }
