@@ -19,23 +19,23 @@ make_card() {
     local card="$cache_dir/${id}.png"
     [[ -f "$card" ]] && { printf '%s' "$card"; return; }
 
-    if printf '%s' "$line" | grep -qP '\t(img/|image/)'; then
+    if printf '%s' "$line" | grep -qF '[[ binary'; then
         # Image entry — decode and thumbnail.
         cliphist decode <<< "$line" \
-            | convert - -resize "${card_w}x${card_h}^" -gravity Center \
+            | magick - -resize "${card_w}x${card_h}^" -gravity Center \
                 -extent "${card_w}x${card_h}" -background "$bg" "$card" 2>/dev/null \
-            || convert -size "${card_w}x${card_h}" xc:"$bg" "$card"
+            || magick -size "${card_w}x${card_h}" xc:"$bg" "$card"
     else
         # Text entry — render wrapped caption.
         local text; text=$(cut -f2- <<< "$line" | head -c 400)
-        convert -size "${card_w}x${card_h}" \
+        magick -size "${card_w}x${card_h}" \
             -background "$bg" \
             -fill "$fg" \
-            -font "Monospace" \
+            -font "DejaVu-Sans-Mono" \
             -pointsize 11 \
             caption:"$text" \
             "$card" 2>/dev/null \
-            || convert -size "${card_w}x${card_h}" xc:"$bg" "$card"
+            || magick -size "${card_w}x${card_h}" xc:"$bg" "$card"
     fi
 
     printf '%s' "$card"
