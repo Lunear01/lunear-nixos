@@ -9,7 +9,7 @@ inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
     inputs.nix-flatpak.nixosModules.nix-flatpak
-    ../configuration.nix
+    ../hosts/${hostname}
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager = {
