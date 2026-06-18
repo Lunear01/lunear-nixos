@@ -17,24 +17,24 @@ window {
     transparency:        "real";
     location:            center;
     anchor:              center;
-    width:               820px;
+    width:               700px;
     border:              1px solid;
     border-radius:       16px;
     border-color:        @glass-sheen;
     background-color:    @glass;
-    padding:             16px;
+    padding:             12px;
     cursor:              "default";
 }
 
 mainbox {
-    spacing:             12px;
+    spacing:             8px;
     background-color:    transparent;
     children:            [ "inputbar", "listview" ];
 }
 
 inputbar {
-    padding:             8px 12px;
-    spacing:             8px;
+    padding:             6px 10px;
+    spacing:             6px;
     border:              1px solid;
     border-radius:       10px;
     border-color:        @glass-sheen;
@@ -60,7 +60,7 @@ listview {
     columns:             3;
     lines:               3;
     scrollbar:           false;
-    spacing:             8px;
+    spacing:             6px;
     fixed-height:        true;
     fixed-columns:       true;
     layout:              vertical;
@@ -69,8 +69,8 @@ listview {
 
 element {
     orientation:         vertical;
-    padding:             8px;
-    spacing:             6px;
+    padding:             6px;
+    spacing:             4px;
     border-radius:       10px;
     background-color:    transparent;
     text-color:          @foreground;
@@ -90,7 +90,7 @@ element selected.normal {
 }
 
 element-icon {
-    size:                180px;
+    size:                148px;
     border-radius:       8px;
     cursor:              inherit;
     background-color:    transparent;
