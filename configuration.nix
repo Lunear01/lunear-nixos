@@ -39,24 +39,15 @@
   environment.systemPackages = with pkgs; [
      vim
      wget
-     kitty
-     waybar
      awww
-     git
-     rofi
-     swaynotificationcenter
-     fastfetch
      hyprshell
      nautilus
-     vscode
      wireguard-tools
      proton-vpn
-     cliphist
      wl-clipboard
      libnotify
      pavucontrol
      brightnessctl
-     playerctl
      overskride
      claude-code
    ];
