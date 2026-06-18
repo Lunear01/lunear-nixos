@@ -11,6 +11,7 @@ in
     home.homeDirectory = "/home/${config.home.username}";
     home.stateVersion = "26.05";
 
+    nixpkgs.config.allowUnfree = true;
 
     # Programs
     programs.bash = {
@@ -24,7 +25,7 @@ in
         enable = true;
         systemd.enable = true;
     };
-   
+
     programs.git.enable = true;
     programs.kitty = {
         enable = true;
@@ -43,9 +44,40 @@ in
     };
     programs.fastfetch.enable = true;
     programs.vscode.enable = true;
+    programs.firefox.enable = true;
+    programs.vim.enable = true;
 
-    # wallust — generates the colorscheme from the wallpaper (see wallust/).
-    home.packages = [ pkgs.wallust ];
+    fonts.fontconfig.enable = true;
+
+    home.packages = with pkgs; [
+        # Theming
+        wallust
+
+        # CLI utilities
+        tree
+        wget
+
+        # Desktop / Wayland
+        awww
+        hyprshell
+        nautilus
+        wl-clipboard
+        libnotify
+        pavucontrol
+        brightnessctl
+        overskride
+
+        # VPN / networking
+        wireguard-tools
+        proton-vpn
+
+        # Dev tools
+        claude-code
+
+        # Fonts
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.symbols-only
+    ];
 
     # Services
     services.swaync = {
