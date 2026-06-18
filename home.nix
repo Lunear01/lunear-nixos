@@ -18,6 +18,7 @@
         enable = true;
         systemd.enable = true;
     };
+   
     programs.git.enable = true;
     programs.kitty = {
         enable = true;
@@ -44,6 +45,14 @@
     services.swaync.enable = true;
     services.cliphist.enable = true;
     services.playerctld.enable = true;
+
+    systemd.user.services.waybar = {
+        Unit.StartLimitIntervalSec = 0;
+        Service = {
+            Restart = "on-failure";
+            RestartSec = 2;
+        };
+    };
 
     # Session target
     systemd.user.targets.hyprland-session = {
