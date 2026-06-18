@@ -1,0 +1,29 @@
+# wallust — generates a 16-color scheme from the current wallpaper and writes it
+# into the file each app reads. Driven by scripts/theme.sh.
+# Reference: `man wallust` (1) for template filters, `man wallust` (5) for this file.
+#
+# Deployed live via Home Manager out-of-store symlink to ~/.config/wallust/,
+# so edits here apply on the next `theme.sh` run — no rebuild needed.
+
+backend     = "full"      # native Rust pixel parser (no imagemagick dependency)
+color_space = "labmixed"  # perceptually-even color selection
+palette     = "dark16"    # 16 colors on a dark background
+# `threshold` intentionally unset — wallust picks the best per-image default.
+
+# Each entry: a template in ./templates/ → an absolute output path the app reads.
+# Single quotes so backslashes/tildes are left literal (per wallust docs).
+[templates]
+hyprland.template = 'colors-hyprland.lua'
+hyprland.target   = '/home/lunear/.cache/wal/colors-hyprland.lua'
+
+waybar.template = 'colors-waybar.css'
+waybar.target   = '/home/lunear/.cache/wal/colors-waybar.css'
+
+kitty.template = 'colors-kitty.conf'
+kitty.target   = '/home/lunear/.cache/wal/colors-kitty.conf'
+
+rofi.template = 'colors-rofi.rasi'
+rofi.target   = '/home/lunear/.cache/wal/colors-rofi.rasi'
+
+swaync.template = 'colors-swaync.css'
+swaync.target   = '/home/lunear/.cache/wal/colors-swaync.css'

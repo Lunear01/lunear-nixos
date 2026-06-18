@@ -33,8 +33,13 @@
      ];
    };
 
-  programs.firefox.enable = true; 
+  programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
+  ];
 
   environment.systemPackages = with pkgs; [
      vim

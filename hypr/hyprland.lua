@@ -58,7 +58,14 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user enable --now hyprpolkitagent.service")
     -- Status bar (waybar), notifications (swaync), clipboard history
     -- (cliphist) and media control (playerctld) are managed declaratively
-    -- as home-manager systemd user services in /etc/nixos/home.nix.
+    -- as home-manager systemd user services in /etc/nixos/home.nix. Those
+    -- services bind to graphical-session.target, so push the compositor env
+    -- into the systemd/dbus user session and start the session target that
+    -- activates them (hyprland-session.target is defined in home.nix).
+    hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+    hl.exec_cmd("systemctl --user start hyprland-session.target")
+    -- Restore the last wallpaper and recolor the desktop from it (wallust).
+    hl.exec_cmd(home .. "/.config/hypr/scripts/theme.sh")
 end)
 
 
@@ -219,6 +226,7 @@ hl.bind(mainMod .. " + Return",         hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E",              hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + Space",          hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + W",              hl.dsp.exec_cmd(home .. "/.config/hypr/scripts/wallpaper-picker.sh"))
 
 -- Window management
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
