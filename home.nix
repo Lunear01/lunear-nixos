@@ -63,24 +63,26 @@
     # Sources live in this flake (git-tracked), so edits need a rebuild (`nrs`)
     # to take effect. Runtime theming still works: wallust writes its generated
     # palette to ~/.cache/wal/, which these configs @import/include.
+    # Sources all live under ./hyprland-config/; the attribute names below are
+    # the deploy targets relative to ~/.config.
     xdg.configFile = {
-        "hypr/hyprland.lua".source = ./hypr/hyprland.lua;
-        "waybar/config.jsonc".source = ./waybar/config.jsonc;
-        "waybar/style.css".source = ./waybar/style.css;
+        "hypr/hyprland.lua".source = ./hyprland-config/hypr/hyprland.lua;
+        "waybar/config.jsonc".source = ./hyprland-config/waybar/config.jsonc;
+        "waybar/style.css".source = ./hyprland-config/waybar/style.css;
 
         # Pywal-style theming via wallust: wallpaper -> palette -> every app.
-        "wallust/wallust.toml".source = ./wallust/wallust.toml;
-        "wallust/templates".source = ./wallust/templates;
-        "rofi/theme.rasi".source = ./rofi/theme.rasi;
-        "swaync/style.css".source = ./swaync/style.css;
+        "wallust/wallust.toml".source = ./hyprland-config/wallust/wallust.toml;
+        "wallust/templates".source = ./hyprland-config/wallust/templates;
+        "rofi/theme.rasi".source = ./hyprland-config/rofi/theme.rasi;
+        "swaync/style.css".source = ./hyprland-config/swaync/style.css;
 
         # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
         "hypr/scripts/theme.sh" = {
-            source = ./scripts/theme.sh;
+            source = ./hyprland-config/scripts/theme.sh;
             executable = true;
         };
         "hypr/scripts/wallpaper-picker.sh" = {
-            source = ./scripts/wallpaper-picker.sh;
+            source = ./hyprland-config/scripts/wallpaper-picker.sh;
             executable = true;
         };
     };

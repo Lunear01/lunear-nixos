@@ -11,7 +11,7 @@ Hyprland on Wayland.
 | `configuration.nix` | System config — boot, networking, services, system packages. |
 | `hardware-configuration.nix` | **Machine-specific** (disks, kernel modules). Regenerate per machine. |
 | `home.nix` | Home Manager — user programs, services, and dotfiles. |
-| `hypr/hyprland.lua` | Hyprland config, symlinked live into `~/.config/hypr/`. |
+| `hyprland-config/` | Desktop dotfiles (hypr, waybar, rofi, swaync, wallust, scripts), deployed into `~/.config/` by `home.nix`. |
 
 ## Applying changes
 
@@ -25,10 +25,12 @@ reproducible.
 
 ## Hyprland config
 
-`hypr/hyprland.lua` is deployed via a Home Manager out-of-store symlink, so
-`~/.config/hypr/hyprland.lua` points straight at the repo file. Edit it in place
-and changes apply on the next Hyprland reload — no rebuild needed. This requires
-the repo to live at `/etc/nixos`.
+Dotfiles under `hyprland-config/` are deployed declaratively by `home.nix`
+(`xdg.configFile`), copied into the Nix store and symlinked into `~/.config/`.
+Edits there take effect on the next `nrs`. Runtime theming is unaffected:
+wallust writes its generated palette to `~/.cache/wal/`, which these configs
+`@import`/`include`, so re-theming the desktop still happens live without a
+rebuild.
 
 ## Reinstalling on a new machine
 
