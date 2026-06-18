@@ -88,9 +88,15 @@ in
     ];
 
     # Flatpak
-    services.flatpak.packages = [
-        "app.zen_browser.zen"
-    ];
+    services.flatpak = {
+        remotes = [{
+            name = "flathub";
+            location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+        }];
+        packages = [
+            "app.zen_browser.zen"
+        ];
+    };
 
     # Services
     services.swaync = {
