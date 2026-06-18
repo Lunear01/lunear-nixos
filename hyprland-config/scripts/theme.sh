@@ -17,7 +17,7 @@ if ! awww query >/dev/null 2>&1; then
     awww-daemon >/dev/null 2>&1 &
     sleep 0.5
 fi
-awww img "$wall" --transition-type grow --transition-pos 0.9,0.1 --transition-fps 60
+awww img "$wall" --transition-type grow --transition-pos 0.9,0.1 --transition-fps 60 --transition-duration 0.8
 
 wallust run "$wall"
 echo "$wall" > "$cache/wal"

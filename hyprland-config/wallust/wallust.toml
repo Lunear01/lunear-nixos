@@ -2,13 +2,26 @@
 # into the file each app reads. Driven by scripts/theme.sh.
 # Reference: `man wallust` (1) for template filters, `man wallust` (5) for this file.
 #
-# Deployed live via Home Manager out-of-store symlink to ~/.config/wallust/,
-# so edits here apply on the next `theme.sh` run — no rebuild needed.
+# Home Manager copies this into the nix store and symlinks it to
+# ~/.config/wallust/, so edits here need a rebuild to deploy:
+#   sudo nixos-rebuild switch --flake /etc/nixos#lunear-nixos
+# After deploying, run `theme.sh` to regenerate the palette with the new config.
 
 backend     = "full"      # native Rust pixel parser (no imagemagick dependency)
 color_space = "labmixed"  # perceptually-even color selection
 palette     = "dark16"    # 16 colors on a dark background
 # `threshold` intentionally unset — wallust picks the best per-image default.
+
+# Lift any wallpaper colors that land too close to the (dark) background so
+# foreground text and accent icons stay legible regardless of the image. The
+# reference for the check is the background color. This is the main guard
+# against "invisible on some wallpapers" — measured across the wallpaper folder
+# it pulls the primary accents to a WCAG-AA contrast on all but the very
+# darkest images (those few are floored further in waybar/style.css).
+# NOTE: deliberately NOT setting `saturation` — a global saturation boost
+# pushes accents *darker* and lowers contrast (verified), the opposite of what
+# we want, and it oversaturates already-vivid wallpapers.
+check_contrast = true
 
 # Each entry: a template in ./templates/ → an absolute output path the app reads.
 # Single quotes so backslashes/tildes are left literal (per wallust docs).
