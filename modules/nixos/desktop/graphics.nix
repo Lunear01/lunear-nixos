@@ -1,6 +1,13 @@
-{ ... }:
+{ config, lib, ... }:
 
+let
+  cfg = config.lunear.desktop.graphics;
+in
 {
-   # GPU acceleration for Wayland
-  hardware.graphics.enable = true;
+  options.lunear.desktop.graphics.enable =
+    lib.mkEnableOption "GPU acceleration for Wayland";
+
+  config = lib.mkIf cfg.enable {
+    hardware.graphics.enable = true;
+  };
 }

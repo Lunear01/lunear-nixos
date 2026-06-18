@@ -1,8 +1,16 @@
-{ ... }:
+{ config, lib, ... }:
 
+let
+  cfg = config.lunear.desktop.bluetooth;
+in
 {
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
+  options.lunear.desktop.bluetooth.enable =
+    lib.mkEnableOption "Bluetooth (with blueman applet)";
 
-  services.blueman.enable = true;
+  config = lib.mkIf cfg.enable {
+    hardware.bluetooth.enable = true;
+    hardware.bluetooth.powerOnBoot = true;
+
+    services.blueman.enable = true;
+  };
 }
