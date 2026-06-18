@@ -20,7 +20,6 @@
 @define-color accent    @color4;   /* primary   — clock, network, volume      */
 @define-color accent2   @color6;   /* secondary — backlight, bluetooth        */
 @define-color accent3   @color5;   /* tertiary  — clipboard, notifications     */
-@define-color accent4   @color2;   /* quaternary— cpu/mem/temp drawer          */
 
 @define-color warning   #ffb454;
 @define-color critical  #ff5370;
@@ -28,8 +27,8 @@
 /* ── Base ─────────────────────────────────────────────────────────────────*/
 * {
     font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", sans-serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 500;
     min-height: 0;
     /* kill the default per-widget box so only our pills draw a background */
     border: none;
@@ -49,8 +48,8 @@ window#waybar {
 .modules-center {
     background: @bg;
     border: 1px solid @border;
-    border-radius: 16px;
-    padding: 2px 6px;
+    border-radius: 13px;
+    padding: 1px 4px;
     margin: 0 4px;
     box-shadow: inset 0 1px 0 0 @sheen;
 }
@@ -68,13 +67,12 @@ window#waybar {
 /* Liquid-glass pills for the right-side groups + standalone battery. Group
  * containers (#controls etc.) get their own padding; #battery keeps the leaf
  * padding from the rule below, so only the glass surface is added here. */
-#expand,
 #controls,
 #connectivity {
     background: @bg;
     border: 1px solid @border;
-    border-radius: 14px;
-    padding: 2px 2px;
+    border-radius: 12px;
+    padding: 1px 2px;
     margin: 0 4px;
     box-shadow: inset 0 1px 0 0 @sheen;
 }
@@ -88,20 +86,15 @@ window#waybar {
 #custom-clipboard,
 #clock,
 #custom-notification,
-#cpu,
-#memory,
-#temperature,
-#custom-expand,
-#custom-endpoint,
 #pulseaudio,
 #backlight,
 #bluetooth,
 #network,
 #battery,
 #tray {
-    padding: 0 11px;
-    margin: 2px 1px;
-    border-radius: 11px;
+    padding: 0 8px;
+    margin: 1px 1px;
+    border-radius: 9px;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -111,9 +104,9 @@ window#waybar {
 }
 #workspaces button {
     color: @muted;
-    padding: 0 9px;
-    margin: 2px 2px;
-    border-radius: 10px;
+    padding: 0 7px;
+    margin: 1px 2px;
+    border-radius: 8px;
     transition: all 0.2s ease;
 }
 #workspaces button.active {
@@ -174,17 +167,4 @@ window#waybar {
 }
 @keyframes blink {
     to { color: transparent; }
-}
-
-/* ── Expandable system drawer (cpu / mem / temp) ──────────────────────────*/
-#custom-expand    { color: @accent4; }
-#custom-expand:hover { background-color: alpha(@accent4, 0.16); }
-#cpu              { color: @accent4; }
-#memory           { color: @accent4; }
-#temperature      { color: @accent4; }
-#temperature.critical { color: @critical; }
-#custom-endpoint  {
-    color: @muted;
-    padding: 0 4px;
-    margin: 2px 0;
 }
