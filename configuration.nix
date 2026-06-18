@@ -17,6 +17,7 @@
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   time.timeZone = "America/Toronto";
   time.hardwareClockInLocalTime = true; # Sync Windows dualboot clock
