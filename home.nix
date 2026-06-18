@@ -64,12 +64,16 @@ in
         # Desktop / Wayland
         awww
         hyprshell
+        hyprshot
         nautilus
         wl-clipboard
         libnotify
         pavucontrol
         brightnessctl
         overskride
+
+        # Browser Web app
+        chromium
 
         # VPN / networking
         wireguard-tools
@@ -81,6 +85,11 @@ in
         # Fonts
         nerd-fonts.jetbrains-mono
         nerd-fonts.symbols-only
+    ];
+
+    # Flatpak
+    services.flatpak.packages = [
+        "app.zen_browser.zen"
     ];
 
     # Services

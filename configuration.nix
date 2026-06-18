@@ -35,7 +35,13 @@
 
   services.displayManager.gdm.enable = true;
   services.blueman.enable = true;
-  services.flatpak.enable = true;
+  services.flatpak = {
+    enable = true;
+    remotes = [{
+      name = "flathub";
+      location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+    }];
+  };
 
   services.pipewire = {
     enable = true;
