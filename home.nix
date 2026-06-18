@@ -59,27 +59,29 @@
         };
     };
 
-    # Dotfiles — symlinked live to the repo so edits apply without a rebuild.
-    # Requires the flake to be cloned at /etc/nixos (the standard location).
-    
-    xdg.configFile."hypr/hyprland.lua".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/hypr/hyprland.lua";
-    xdg.configFile."waybar/config.jsonc".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/waybar/config.jsonc";
-    xdg.configFile."waybar/style.css".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/waybar/style.css";
+    # Dotfiles — copied into the Nix store and symlinked declaratively.
+    # Sources live in this flake (git-tracked), so edits need a rebuild (`nrs`)
+    # to take effect. Runtime theming still works: wallust writes its generated
+    # palette to ~/.cache/wal/, which these configs @import/include.
+    xdg.configFile = {
+        "hypr/hyprland.lua".source = ./hypr/hyprland.lua;
+        "waybar/config.jsonc".source = ./waybar/config.jsonc;
+        "waybar/style.css".source = ./waybar/style.css;
 
-    # Pywal-style theming via wallust: wallpaper -> palette -> every app.
-    xdg.configFile."wallust/wallust.toml".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/wallust/wallust.toml";
-    xdg.configFile."wallust/templates".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/wallust/templates";
-    xdg.configFile."rofi/theme.rasi".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/rofi/theme.rasi";
-    xdg.configFile."swaync/style.css".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/swaync/style.css";
-    xdg.configFile."hypr/scripts/theme.sh".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/scripts/theme.sh";
-    xdg.configFile."hypr/scripts/wallpaper-picker.sh".source =
-        config.lib.file.mkOutOfStoreSymlink "/etc/nixos/scripts/wallpaper-picker.sh";
+        # Pywal-style theming via wallust: wallpaper -> palette -> every app.
+        "wallust/wallust.toml".source = ./wallust/wallust.toml;
+        "wallust/templates".source = ./wallust/templates;
+        "rofi/theme.rasi".source = ./rofi/theme.rasi;
+        "swaync/style.css".source = ./swaync/style.css;
+
+        # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
+        "hypr/scripts/theme.sh" = {
+            source = ./scripts/theme.sh;
+            executable = true;
+        };
+        "hypr/scripts/wallpaper-picker.sh" = {
+            source = ./scripts/wallpaper-picker.sh;
+            executable = true;
+        };
+    };
 }

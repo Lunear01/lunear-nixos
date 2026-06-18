@@ -18,16 +18,8 @@
         "custom/clipboard": {
             "format": "",
             "tooltip-format": "Clipboard history",
-            "on-click": "$HOME/.config/hypr/scripts/cliphist-rofi.sh",
+            "on-click": "cliphist list | rofi -dmenu | cliphist decode | wl-copy",
             "on-click-right": "cliphist wipe"
-        },
-        "custom/colorpicker": {
-            "format": "{}",
-            "return-type": "json",
-            "interval": "once",
-            "exec": "$HOME/.config/waybar/scripts/colorpicker.sh -j",
-            "on-click": "$HOME/.config/waybar/scripts/colorpicker.sh",
-            "signal": 1
         },
         "custom/notification": {
             "tooltip": false,
