@@ -1,15 +1,9 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   imports = [
-    ../../modules/home/lib.nix
-    ../../modules/home/shell/bash.nix
-    ../../modules/home/dev/default.nix
-    ../../modules/home/desktop/kitty/default.nix
-    ../../modules/home/desktop/rofi/default.nix
-    ../../modules/home/desktop/waybar/default.nix
-    ../../modules/home/desktop/swaync/default.nix
-    ../../modules/home/desktop/hyprland/default.nix
+    ../../profiles/home/base.nix
+    ../../profiles/home/desktops/hyprland.nix
   ];
 
   home.username = "lunear";
@@ -19,34 +13,6 @@
   home.sessionVariables = {
     EDITOR = "vim";
   };
-
-  programs.fastfetch.enable = true;
-  programs.firefox.enable = true;
-  programs.vim.enable = true;
-
-  fonts.fontconfig.enable = true;
-
-  xdg.userDirs = {
-    enable = true;
-    createDirectories = true;
-  };
-
-  home.packages = with pkgs; [
-    # CLI utilities
-    tree
-    wget
-
-    # Browser Web app
-    chromium
-
-    # VPN / networking
-    wireguard-tools
-    proton-vpn
-
-    # Fonts
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.symbols-only
-  ];
 
   # Flatpak (user app list; system service lives in modules/nixos/desktop/flatpak.nix)
   services.flatpak = {
