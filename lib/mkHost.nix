@@ -16,7 +16,7 @@ inputs.nixpkgs.lib.nixosSystem {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.lunear = import ../home.nix;
+        users.lunear = import ../users/lunear/home.nix;
         backupFileExtension = "backup";
         sharedModules = [ inputs.nix-flatpak.homeManagerModules.nix-flatpak ];
       };
