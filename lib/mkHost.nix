@@ -7,17 +7,21 @@ inputs:
 
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
+  specialArgs = { inherit inputs hostname system; };
   modules = [
     inputs.nix-flatpak.nixosModules.nix-flatpak
     ../modules/nixos
     ../hosts/${hostname}
     inputs.home-manager.nixosModules.home-manager
     {
+      networking.hostName = hostname;
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.lunear = import ../users/lunear/home.nix;
+        users = inputs.nixpkgs.lib.genAttrs users
+          (u: import ../users/${u}/home.nix);
         backupFileExtension = "backup";
+        extraSpecialArgs = { inherit inputs hostname; };
         sharedModules = [ inputs.nix-flatpak.homeManagerModules.nix-flatpak ];
       };
       # Pin the registry so `nix run nixpkgs#foo` uses the
