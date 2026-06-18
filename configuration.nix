@@ -15,6 +15,9 @@
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = false;
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
   time.timeZone = "America/Toronto";
   time.hardwareClockInLocalTime = true; # Sync Windows dualboot clock
 
