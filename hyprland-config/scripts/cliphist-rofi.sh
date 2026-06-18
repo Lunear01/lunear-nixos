@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 # cliphist-rofi.sh — card-strip clipboard picker (SUPER+V).
-# Each entry is rendered as a 200×200 card PNG via imagemagick and cached in
-# $XDG_RUNTIME_DIR so repeated opens are instant.
+# Cards are 130×130 PNGs with rounded corners, rendered via pango (crisp text).
+# Results cached in $XDG_RUNTIME_DIR — instant on repeat opens.
 set -euo pipefail
 
 cache_dir="${XDG_RUNTIME_DIR:-/tmp}/cliphist-cards"
 mkdir -p "$cache_dir"
 
-card_w=200; card_h=200
+# Render at 2× (260px) so rofi downscales to 130px logical — sharp on 1.25× display.
+# Font size is also doubled (18pt → 9pt visual) to match.
+card_w=260; card_h=260; radius=24; pad=16
 bg="#1a1a1a"; fg="#eef3f1"
 max_entries=63  # 7 columns; rofi scrolls vertically beyond that
 
-# Render (and cache) a preview card for one cliphist list line.
-# Prints the path to the PNG.
+# XML-escape text for pango markup.
+pango_escape() {
+    printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g'
+}
+
 make_card() {
     local line="$1"
     local id; id=$(cut -f1 <<< "$line")
@@ -20,22 +25,44 @@ make_card() {
     [[ -f "$card" ]] && { printf '%s' "$card"; return; }
 
     if printf '%s' "$line" | grep -qF '[[ binary'; then
-        # Image entry — decode and thumbnail.
+        # Image entry — decode and thumbnail with rounded corners.
+        local tmp; tmp="${cache_dir}/${id}_raw.png"
         cliphist decode <<< "$line" \
             | magick - -resize "${card_w}x${card_h}^" -gravity Center \
-                -extent "${card_w}x${card_h}" -background "$bg" "$card" 2>/dev/null \
-            || magick -size "${card_w}x${card_h}" xc:"$bg" "$card"
+                -extent "${card_w}x${card_h}" "$tmp" 2>/dev/null \
+            && magick "$tmp" \
+                \( -size "${card_w}x${card_h}" xc:none \
+                   -fill white \
+                   -draw "roundrectangle 0,0 $((card_w-1)),$((card_h-1)) ${radius},${radius}" \
+                \) \
+                -compose DstIn -composite \
+                PNG32:"$card" 2>/dev/null \
+            && rm -f "$tmp" \
+            || magick -size "${card_w}x${card_h}" xc:none \
+                -fill "$bg" \
+                -draw "roundrectangle 0,0 $((card_w-1)),$((card_h-1)) ${radius},${radius}" \
+                PNG32:"$card"
     else
-        # Text entry — render wrapped caption.
-        local text; text=$(cut -f2- <<< "$line" | head -c 400)
-        magick -size "${card_w}x${card_h}" \
-            -background "$bg" \
-            -fill "$fg" \
-            -font "DejaVu-Sans-Mono" \
-            -pointsize 11 \
-            caption:"$text" \
-            "$card" 2>/dev/null \
-            || magick -size "${card_w}x${card_h}" xc:"$bg" "$card"
+        # Text entry — pango rendering on a rounded background.
+        local text inner_w inner_h pango_text
+        text=$(cut -f2- <<< "$line" | head -c 300 | tr '\n' ' ')
+        pango_text=$(pango_escape "$text")
+        inner_w=$(( card_w - pad * 2 ))
+        inner_h=$(( card_h - pad * 2 ))
+
+        magick -size "${card_w}x${card_h}" xc:none \
+            -fill "$bg" \
+            -draw "roundrectangle 0,0 $((card_w-1)),$((card_h-1)) ${radius},${radius}" \
+            \( -background none -size "${inner_w}x${inner_h}" \
+               pango:"<span font='DejaVu Sans Mono 18' foreground='${fg}'>${pango_text}</span>" \
+            \) \
+            -gravity NorthWest -geometry "+${pad}+${pad}" \
+            -compose Over -composite \
+            PNG32:"$card" 2>/dev/null \
+            || magick -size "${card_w}x${card_h}" xc:none \
+                -fill "$bg" \
+                -draw "roundrectangle 0,0 $((card_w-1)),$((card_h-1)) ${radius},${radius}" \
+                PNG32:"$card"
     fi
 
     printf '%s' "$card"
