@@ -24,6 +24,10 @@
 
   services.displayManager.gdm.enable = true;
 
+  # Allow Nautilus to detect and mount external drives (USB sticks, SD cards, etc.)
+  services.udisks2.enable = true; # block device detection + mounting backend
+  services.gvfs.enable = true;    # virtual filesystem layer Nautilus uses to browse/mount
+
   programs.hyprland = {
       enable = true;
       xwayland.enable = true;
