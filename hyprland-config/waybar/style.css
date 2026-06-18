@@ -10,7 +10,7 @@
 
 /* ── Semantic palette ─────────────────────────────────────────────────────
  * Everything below references these, so re-theming = editing this block.    */
-@define-color bg        alpha(@background, 0.55);   /* liquid-glass pill body  */
+@define-color bg        alpha(@background, 0.82);   /* liquid-glass pill body  */
 @define-color bg-hover  alpha(@foreground, 0.10);   /* generic hover wash     */
 @define-color border    alpha(@foreground, 0.16);   /* hairline pill outline  */
 @define-color sheen     alpha(@foreground, 0.10);   /* top glass highlight    */
@@ -42,12 +42,13 @@ window#waybar {
 }
 
 /* Liquid-glass floating pill groups. A translucent body (blurred by the
- * Hyprland layerrule on the "waybar" namespace) plus a top-down sheen gradient
- * and an inset highlight give the panes a wet, glassy sheen. */
+ * Hyprland layerrule on the "waybar" namespace) plus a thin inset highlight at
+ * the very top give the panes a wet, glassy sheen — without a full-height
+ * gradient banding across the body. */
 .modules-left,
 .modules-center,
 .modules-right {
-    background: linear-gradient(to bottom, @sheen, @bg 45%);
+    background: @bg;
     border: 1px solid @border;
     border-radius: 16px;
     padding: 2px 6px;
