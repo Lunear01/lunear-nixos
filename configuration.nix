@@ -30,6 +30,14 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
 
+  # Linux ROG Control Center
+  services = {
+    asusd = {
+      enable = true;
+      enableUserService = true;
+    };
+};
+
   programs.hyprland = {
       enable = true;
       xwayland.enable = true;
