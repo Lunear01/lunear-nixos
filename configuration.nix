@@ -50,6 +50,12 @@
     pulse.enable = true;
   };
 
+  # Flatpak .desktop files need to be discoverable by app launchers
+  environment.sessionVariables.XDG_DATA_DIRS = [
+    "/var/lib/flatpak/exports/share"
+    "$HOME/.local/share/flatpak/exports/share"
+  ];
+
   # Needed for Flatpak
   xdg.portal = {
     enable = true;
