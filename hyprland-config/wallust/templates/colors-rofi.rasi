@@ -6,4 +6,12 @@
     selected:       {{color4}};
     active:         {{color2}};
     urgent:         {{color1}};
+
+    /* Liquid-glass variants — same hues with an alpha channel appended
+     * (#rrggbb -> #rrggbbaa). Hyprland's layer blur frosts whatever shows
+     * through, so these read as translucent panes rather than flat fills. */
+    glass:          {{background}}b3;   /* ~70% — main window pane           */
+    glass-alt:      {{color0 | lighten(0.06)}}80;  /* ~50% — inputbar/rows   */
+    glass-sheen:    {{foreground}}1f;   /* ~12% — hairline highlight edge    */
+    glass-sel:      {{color4}}cc;       /* ~80% — selected element           */
 }

@@ -10,9 +10,10 @@
 
 /* ── Semantic palette ─────────────────────────────────────────────────────
  * Everything below references these, so re-theming = editing this block.    */
-@define-color bg        alpha(@background, 0.78);   /* frosted pill body      */
+@define-color bg        alpha(@background, 0.55);   /* liquid-glass pill body  */
 @define-color bg-hover  alpha(@foreground, 0.10);   /* generic hover wash     */
-@define-color border    alpha(@foreground, 0.10);   /* hairline pill outline  */
+@define-color border    alpha(@foreground, 0.16);   /* hairline pill outline  */
+@define-color sheen     alpha(@foreground, 0.10);   /* top glass highlight    */
 @define-color fg        @foreground;
 @define-color muted     @color8;
 
@@ -40,15 +41,18 @@ window#waybar {
     color: @fg;
 }
 
-/* Frosted floating pill groups. */
+/* Liquid-glass floating pill groups. A translucent body (blurred by the
+ * Hyprland layerrule on the "waybar" namespace) plus a top-down sheen gradient
+ * and an inset highlight give the panes a wet, glassy sheen. */
 .modules-left,
 .modules-center,
 .modules-right {
-    background-color: @bg;
+    background: linear-gradient(to bottom, @sheen, @bg 45%);
     border: 1px solid @border;
     border-radius: 16px;
     padding: 2px 6px;
     margin: 0 4px;
+    box-shadow: inset 0 1px 0 0 @sheen;
 }
 
 /* Uniform breathing room for every leaf module. */

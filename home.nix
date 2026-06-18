@@ -23,6 +23,10 @@
         enable = true;
         extraConfig = ''
             include /home/lunear/.cache/wal/colors-kitty.conf
+            # Liquid glass: let the (blurred) desktop show through; allows live
+            # opacity tweaks. Run fastfetch on every launch via the session file.
+            dynamic_background_opacity yes
+            startup_session /home/lunear/.config/kitty/session.conf
         '';
     };
     programs.rofi = {
@@ -63,6 +67,7 @@
         "wallust/wallust.toml".source = ./hyprland-config/wallust/wallust.toml;
         "wallust/templates".source = ./hyprland-config/wallust/templates;
         "rofi/theme.rasi".source = ./hyprland-config/rofi/theme.rasi;
+        "kitty/session.conf".source = ./hyprland-config/kitty/session.conf;
         "swaync/style.css".source = ./hyprland-config/swaync/style.css;
 
         # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.

@@ -317,3 +317,15 @@ hl.window_rule({
     match = { class = "(pavucontrol|nm-connection-editor|blueman-manager|org.gnome.Calculator|nwg-look|qt5ct|qt6ct)" },
     float = true,
 })
+
+
+--------------------
+---- LAYER RULES ---
+--------------------
+-- Window blur only frosts toplevel windows; layer-shell surfaces (the bar,
+-- launcher, notifications) need an explicit rule. These give the translucent
+-- rofi / waybar / swaync backgrounds their liquid-glass frost.
+-- See https://wiki.hypr.land/Configuring/Window-Rules/#layer-rules
+hl.layer_rule({ name = "blur-rofi",   match = { namespace = "^rofi$" },   blur = true, ignore_alpha = 0.5 })
+hl.layer_rule({ name = "blur-waybar", match = { namespace = "^waybar$" }, blur = true, ignore_alpha = 0.3 })
+hl.layer_rule({ name = "blur-swaync", match = { namespace = "^swaync.*" }, blur = true, ignore_alpha = 0.3 })
