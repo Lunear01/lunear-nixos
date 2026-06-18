@@ -1,4 +1,4 @@
-{config, pkgs, lib, ...}:
+{ config, pkgs, lib, ... }:
 
 let
     home = config.home.homeDirectory;
@@ -11,7 +11,9 @@ in
     home.homeDirectory = "/home/${config.home.username}";
     home.stateVersion = "26.05";
 
-    nixpkgs.config.allowUnfree = true;
+    home.sessionVariables = {
+        EDITOR = "vim";
+    };
 
     # Programs
     programs.bash = {
@@ -37,9 +39,6 @@ in
     };
     programs.rofi = {
         enable = true;
-        # Layout lives in the repo; colors come from the wallpaper via wallust.
-        # Coerce to the store-path string: the rofi module treats a string as a
-        # theme path, but a derivation as an inline rasi attrset.
         theme = "${themed ./hyprland-config/rofi/theme.rasi}";
     };
     programs.fastfetch.enable = true;
@@ -48,6 +47,11 @@ in
     programs.vim.enable = true;
 
     fonts.fontconfig.enable = true;
+
+    xdg.userDirs = {
+        enable = true;
+        createDirectories = true;
+    };
 
     home.packages = with pkgs; [
         # Theming

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -10,30 +10,57 @@
 
   networking.hostName = "lunear-nixos";
   networking.networkmanager.enable = true;
-  networking.firewall.checkReversePath = false; # ProtonVPN
+  networking.firewall = {
+    enable = true;
+     # ProtonVPN requirement
+    checkReversePath = false;
+  };
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true;
+
+   # GPU acceleration for Wayland
+  hardware.graphics.enable = true;
 
   time.timeZone = "America/Toronto";
-  time.hardwareClockInLocalTime = true; # Sync Windows dualboot clock
+
+  # Sync Windows dualboot clock
+  time.hardwareClockInLocalTime = true; 
+
+  # Desktop privilege escalation
+  security.polkit.enable = true;
+
+  # Real-time scheduling for PipeWire
+  security.rtkit.enable = true;   
 
   services.displayManager.gdm.enable = true;
+  services.blueman.enable = true;
   services.flatpak.enable = true;
 
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # Needed for Flatpak
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
-  services.udisks2.enable = true; # External drive mounting
-  services.gvfs.enable = true;    # Nautilus backend
+  # External drive mounting for Nautilus
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
 
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
+
+  # Run unpatched binaries (npm, claude-code, etc.)
+  programs.nix-ld.enable = true;
 
   users.users.lunear = {
     isNormalUser = true;
@@ -42,12 +69,27 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-generations +3";
+  nix = {
+    
+    # Flakes only
+    channel.enable = false;
+
+    gc = {
+      automatic = true;
+      dates = "daily";
+      options = "--delete-generations +3";
+    };
+
+    # Periodic store deduplication
+    optimise.automatic = true; 
+
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+      # Wheel users can use nix without sudo
+      trusted-users = [ "root" "@wheel" ];  
+    };
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "26.05";
 }
