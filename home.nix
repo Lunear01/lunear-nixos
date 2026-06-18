@@ -67,6 +67,7 @@ in
         hyprshot
         nautilus
         wl-clipboard
+        imagemagick
         libnotify
         pavucontrol
         brightnessctl
@@ -143,6 +144,7 @@ in
         "kitty/session.conf".source = ./hyprland-config/kitty/session.conf;
         "swaync/style.css".source = themed ./hyprland-config/swaync/style.css;
         "rofi/wallpaper.rasi".source = themed ./hyprland-config/rofi/wallpaper.rasi;
+        "rofi/cliphist.rasi".source = themed ./hyprland-config/rofi/cliphist.rasi;
 
         # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
         "hypr/scripts/theme.sh" = {
@@ -151,6 +153,10 @@ in
         };
         "hypr/scripts/wallpaper-picker.sh" = {
             source = ./hyprland-config/scripts/wallpaper-picker.sh;
+            executable = true;
+        };
+        "hypr/scripts/cliphist-rofi.sh" = {
+            source = ./hyprland-config/scripts/cliphist-rofi.sh;
             executable = true;
         };
     };
