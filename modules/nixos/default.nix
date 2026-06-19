@@ -19,5 +19,6 @@
     ./desktop/files.nix
     ./desktop/flatpak.nix
     ./desktop/hyprland.nix
+    ./desktop/stylix.nix
   ];
 }

@@ -9,5 +9,6 @@
     ../../../modules/home/desktop/waybar/default.nix
     ../../../modules/home/desktop/swaync/default.nix
     ../../../modules/home/desktop/hyprland/default.nix
+    ../../../modules/home/desktop/stylix.nix
   ];
 }

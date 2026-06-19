@@ -8,9 +8,13 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
         nix-flatpak.url = "github:gmodena/nix-flatpak";
+        stylix = {
+            url = "github:nix-community/stylix";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
-    outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, ... }:
+    outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, stylix, ... }:
     let
         mkHost = import ./lib/mkHost.nix inputs;
     in {
