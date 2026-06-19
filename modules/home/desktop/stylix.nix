@@ -11,5 +11,8 @@
     rofi.enable = false;
     hyprland.enable = false;
     swaync.enable = false;
+
+    # Firefox is themed statically by Stylix; declare which profile to apply it to.
+    firefox.profileNames = [ "default" ];
   };
 }
