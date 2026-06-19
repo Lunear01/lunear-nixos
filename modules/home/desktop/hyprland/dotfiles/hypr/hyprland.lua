@@ -240,9 +240,11 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 -- Screen lock / suspend
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session && sleep 1 && systemctl suspend"))
 
--- Screenshots (hyprshot)
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region; pkill hyprpicker; pkill hyprshot"))
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m output"))
+-- Screenshots (hyprshot). Saved to $XDG_PICTURES_DIR (~/Pictures) + clipboard.
+-- region: drag-select an area. output: grab the focused monitor (-m active, so
+-- no slurp monitor-pick prompt — without it "output" cancels to no file).
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region"))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m output -m active"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
