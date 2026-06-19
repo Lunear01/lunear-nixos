@@ -29,10 +29,10 @@ end
 ------------------
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
-    output   = "eDP-1",
+    output   = "eDP-2",
     mode     = "preferred", -- auto-detect the screen's native resolution
     position = "auto",
-    scale    = 1.25,
+    scale    = 1.6,
 })
 -- hl.monitor({ output = "DP-2", mode = "1920x1080@60", position = "1536x0", scale = 1.25 })
 
@@ -72,8 +72,8 @@ end)
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
-hl.env("XCURSOR_SIZE", "15")
-hl.env("HYPRCURSOR_SIZE", "15")
+hl.env("XCURSOR_SIZE", "25")
+hl.env("HYPRCURSOR_SIZE", "25")
 
 
 -----------------------
