@@ -8,5 +8,6 @@
     claude-code
     nodejs_22
     gh
+    python3
   ];
 }
