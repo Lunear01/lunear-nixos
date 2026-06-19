@@ -72,8 +72,8 @@ end)
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
-hl.env("XCURSOR_SIZE", "25")
-hl.env("HYPRCURSOR_SIZE", "25")
+hl.env("XCURSOR_SIZE", "18")
+hl.env("HYPRCURSOR_SIZE", "18")
 
 
 -----------------------
