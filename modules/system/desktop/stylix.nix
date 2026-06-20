@@ -1,6 +1,6 @@
 # Stylix — static base16 identity for everything Stylix can theme (GTK, Qt,
 # cursor, icons, fonts, console, Firefox, VSCode, vim, ...). The theme is
-# selectable: `lunear.theme.name` (default from systemSettings.theme) is looked
+# selectable: `lunear.theme.name` (default from settings.theme) is looked
 # up in the themes/ registry, where each theme is a self-contained directory
 # owning its palette + config. The selected theme's attrs are merged into
 # `stylix`, so a theme can override the cursor/icons/fonts defaults below (they
@@ -12,7 +12,7 @@
 # is intentionally unset (a base16Scheme makes it optional). Edits here need a
 # rebuild:
 #   sudo nixos-rebuild switch --flake /etc/nixos#lunear-nixos
-{ pkgs, lib, config, systemSettings, ... }:
+{ pkgs, lib, config, settings, ... }:
 
 let
   cfg = config.lunear.theme;
@@ -24,7 +24,7 @@ in
     stylix.enable = lib.mkEnableOption "Stylix base16 theming";
     name = lib.mkOption {
       type = lib.types.enum (lib.attrNames themes);
-      default = systemSettings.theme or "everforest-dark-hard";
+      default = settings.theme or "everforest-dark-hard";
       description = "Named base16 theme for the Stylix base layer.";
     };
   };

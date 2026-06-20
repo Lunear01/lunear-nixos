@@ -1,6 +1,6 @@
-# Bash config. Reads the host name from systemSettings so the `nrs` rebuild
+# Bash config. Reads the host name from settings so the `nrs` rebuild
 # alias targets the right flake attribute on any machine.
-{ lib, config, systemSettings, ... }:
+{ lib, config, settings, ... }:
 
 let
   cfg = config.lunear.home.bash;
@@ -12,7 +12,7 @@ in
     programs.bash = {
       enable = true;
       shellAliases = {
-        nrs = "sudo nixos-rebuild --flake /etc/nixos#${systemSettings.hostname} switch";
+        nrs = "sudo nixos-rebuild --flake /etc/nixos#${settings.hostname} switch";
         btw = "echo i use nix btw";
         die = "poweroff";
       };
