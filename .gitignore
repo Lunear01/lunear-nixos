@@ -3,3 +3,5 @@ result-*
 .direnv/
 .claude/
 CLAUDE.md
+action-plans/
+ROADMAP.md

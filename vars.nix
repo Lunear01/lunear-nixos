@@ -26,7 +26,7 @@
   #   barFontPx  -> waybar font size (px)
   #   rofiFontPt -> rofi font size (pt)
   monitor = "eDP-1";
-  scale = 1.333;
+  scale = 1.25;
   cursorSize = 18;
   barFontPx = 15;
   rofiFontPt = 11;
