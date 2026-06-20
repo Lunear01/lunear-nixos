@@ -1,9 +1,12 @@
 # Stylix — static base16 identity for everything Stylix can theme (GTK, Qt,
-# cursor, icons, fonts, console, Firefox, VSCode, vim, ...). The scheme is
+# cursor, icons, fonts, console, Firefox, VSCode, vim, ...). The theme is
 # selectable: `lunear.theme.name` (default from systemSettings.theme) is looked
-# up in themes/default.nix. The five dynamic apps (kitty, waybar, rofi, swaync,
-# hyprland) stay wallust-driven; their Stylix targets are turned off in
-# modules/user/desktop/stylix.nix so nothing is themed twice.
+# up in the themes/ registry, where each theme is a self-contained directory
+# owning its palette + config. The selected theme's attrs are merged into
+# `stylix`, so a theme can override the cursor/icons/fonts defaults below (they
+# are mkDefault) by declaring its own. The five dynamic apps (kitty, waybar,
+# rofi, swaync, hyprland) stay wallust-driven; their Stylix targets are turned
+# off in modules/user/desktop/stylix.nix so nothing is themed twice.
 #
 # Wallpaper is owned by awww/wallust, so `stylix.image` is intentionally unset
 # (a base16Scheme makes it optional). Edits here need a rebuild:
@@ -26,41 +29,47 @@ in
   };
 
   config = lib.mkIf cfg.stylix.enable {
-    stylix = {
-      enable = true;
-      inherit (theme) polarity base16Scheme;
-
-      cursor = {
-        package = pkgs.bibata-cursors;
-        name = "Bibata-Modern-Classic";
-        size = 18;
-      };
-
-      icons = {
+    stylix = lib.mkMerge [
+      # Shared defaults — mkDefault so a theme may override any of them.
+      {
         enable = true;
-        package = pkgs.adwaita-icon-theme;
-        dark = "Adwaita";
-        light = "Adwaita";
-      };
 
-      fonts = {
-        monospace = {
-          package = pkgs.nerd-fonts.jetbrains-mono;
-          name = "JetBrainsMono Nerd Font";
+        cursor = lib.mkDefault {
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Classic";
+          size = 18;
         };
-        sansSerif = {
-          package = pkgs.noto-fonts;
-          name = "Noto Sans";
+
+        icons = lib.mkDefault {
+          enable = true;
+          package = pkgs.adwaita-icon-theme;
+          dark = "Adwaita";
+          light = "Adwaita";
         };
-        serif = {
-          package = pkgs.noto-fonts;
-          name = "Noto Serif";
+
+        fonts = lib.mkDefault {
+          monospace = {
+            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "JetBrainsMono Nerd Font";
+          };
+          sansSerif = {
+            package = pkgs.noto-fonts;
+            name = "Noto Sans";
+          };
+          serif = {
+            package = pkgs.noto-fonts;
+            name = "Noto Serif";
+          };
+          emoji = {
+            package = pkgs.noto-fonts-color-emoji;
+            name = "Noto Color Emoji";
+          };
         };
-        emoji = {
-          package = pkgs.noto-fonts-color-emoji;
-          name = "Noto Color Emoji";
-        };
-      };
-    };
+      }
+
+      # Selected theme: supplies polarity + base16Scheme, and may override the
+      # defaults above with its own cursor/icons/fonts.
+      theme
+    ];
   };
 }

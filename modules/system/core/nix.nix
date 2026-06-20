@@ -11,7 +11,7 @@
     gc = {
       automatic = true;
       dates = "daily";
-      options = "--delete-generations +3";
+      options = "--delete-generations +5";
     };
 
     # Periodic store deduplication
