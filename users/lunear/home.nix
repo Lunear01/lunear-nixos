@@ -2,16 +2,16 @@
 
 let
   # Per-host home tweaks (extra packages, app overrides). Auto-imported when
-  # profiles/user/hosts/<hostname>.nix exists, so a new host is just a new file.
-  # `hostname` is a specialArg (not the config-time `settings`), so it is safe to
-  # use here in `imports` without infinite recursion.
-  hostProfile = ../../profiles/user/hosts/${hostname}.nix;
+  # hosts/<hostname>/home.nix exists, so everything about a machine lives in one
+  # dir. `hostname` is a specialArg (not the config-time `settings`), so it is
+  # safe to use here in `imports` without infinite recursion.
+  hostProfile = ../../hosts/${hostname}/home.nix;
 in
 {
   imports = [
     ../../modules/user          # auto-imports every user (home) module (all guarded/off)
     ../../profiles/user/base.nix
-    ../../profiles/user/desktops/hyprland.nix
+    ../../profiles/user/hyprland.nix
   ] ++ lib.optional (builtins.pathExists hostProfile) hostProfile;
 
   home.username = settings.username;

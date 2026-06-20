@@ -11,10 +11,11 @@ flake.nix            # inputs + auto-discovers every hosts/<host>/
 lib/mkHost.nix       # nixosSystem factory (reads host vars, wires HM, pins registry)
 lib/importAll.nix    # recursive .nix importer used by the module trees
 themes/              # named base16 themes for the Stylix base layer
-hosts/<host>/        # machine: vars.nix (settings) + hardware-configuration.nix + stateVersion
+hosts/<host>/        # machine (everything in one dir): vars.nix + hardware-configuration.nix
+                     #   + default.nix (system, picks profiles) + home.nix (per-host user tweaks)
 profiles/            # policy: aggregate modules and flip their enables
-  ├── system/        #   desktop.nix, desktops/hyprland.nix
-  └── user/          #   base.nix, desktops/hyprland.nix
+  ├── system/        #   hyprland.nix
+  └── user/          #   base.nix, hyprland.nix
 modules/             # mechanism: one feature per module (auto-imported, option-guarded)
   ├── system/        #   core/* (always on) + desktop/* (lunear.* enable, default off)
   └── user/          #   shell, dev, apps/<enum>, desktop/<app>/ (+ dotfiles/)
@@ -30,8 +31,8 @@ The four layers:
 | Layer | Role |
 |-------|------|
 | **`modules/`** | *Mechanism.* One feature per module. Both trees are blanket-imported via `lib/importAll.nix` and every module is option-guarded (`lunear.<area>.<feat>.enable`, default off) or choice-driven (`lunear.{browser,terminal,editor}`), so importing everything is safe — nothing activates until a profile flips it on. Drop a `.nix` file in, it's picked up. |
-| **`profiles/`** | *Policy.* Aggregate module sets and turn features on (e.g. `profiles/system/desktops/hyprland.nix` enables the desktop baseline + Hyprland; `profiles/user/desktops/hyprland.nix` flips on the rice). |
-| **`hosts/`** | *Identity.* Pick profiles, own `hardware-configuration.nix` and `system.stateVersion`. Per-machine settings (hostname, users, theme) live in `vars.nix`. |
+| **`profiles/`** | *Policy.* Aggregate module sets and turn features on (e.g. `profiles/system/hyprland.nix` enables the graphical baseline + Hyprland; `profiles/user/hyprland.nix` flips on the rice). |
+| **`hosts/`** | *Identity.* Everything about one machine lives in `hosts/<host>/`: `default.nix` picks profiles + owns `hardware-configuration.nix` and `system.stateVersion`; `vars.nix` holds per-machine settings (hostname, users, theme); optional `home.nix` adds per-host user tweaks (auto-imported by `users/<u>/home.nix`). |
 | **`users/`** | *User.* `default.nix` is the NixOS account; `vars.nix` is the per-user settings (username, browser/terminal/editor, theme); `home.nix` is the Home Manager identity and the profiles it wants. |
 
 ### Settings (`vars.nix`)
@@ -73,7 +74,8 @@ hyprland) read a `colors.*` file generated from the shared `palette` helper
 
 - **A new host:** add a `hosts/<hostname>/` dir with `vars.nix` (settings),
   `hardware-configuration.nix`, and a `default.nix` importing the profiles it
-  wants. `flake.nix` discovers it automatically — no flake edit.
+  wants (optionally a `home.nix` for per-host user tweaks). `flake.nix` discovers
+  it automatically — no flake edit.
 - **A new user:** add `users/<user>/{default.nix,vars.nix,home.nix}` and list the
   username in the host's `vars.nix` `users`.
 - **A headless server:** a `hosts/<server>/` whose `default.nix` imports no

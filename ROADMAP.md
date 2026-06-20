@@ -9,6 +9,15 @@ _(none)_
 
 ## Recent changes
 
+- **Consolidated profiles; one dir per machine.** Cut layer-bounce + the
+  host split-brain (system half in `hosts/`, user half in `profiles/user/hosts/`).
+  - `profiles/user/hosts/<h>.nix` → `hosts/<h>/home.nix` (everything about a
+    machine now lives in `hosts/<h>/`; `home.nix` discovers it by hostname).
+  - Merged `profiles/system/desktop.nix` into `profiles/system/hyprland.nix`;
+    flattened the single-child `desktops/` dirs (`profiles/{system,user}/hyprland.nix`).
+  - Profiles tree: 6 files → 3. No behavior change.
+  - Verified: both hosts' `…toplevel.drvPath` evaluate.
+
 - **Removed wallust; Stylix-only theming.** The selected base16 theme
   (`lunear.theme.name`) is now the single color source for the whole desktop.
   - Added `palette`/`paletteRaw` helpers to `modules/user/lib.nix` (standard
