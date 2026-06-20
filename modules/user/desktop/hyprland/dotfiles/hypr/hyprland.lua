@@ -77,6 +77,12 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("systemctl --user start hyprland-session.target")
     -- Restore the last wallpaper (colors are static, from the Stylix theme).
     hl.exec_cmd(home .. "/.config/hypr/scripts/theme.sh")
+    -- Clear stale Chromium singleton locks. The lock encodes <hostname>-<pid>;
+    -- after a crash or a host rename (e.g. lunear-nixos -> rog-g14) the old
+    -- lock looks "foreign" and Chromium silently refuses to open (no terminal
+    -- from rofi = invisible error). Safe: only runs at login, before any
+    -- Chromium starts.
+    hl.exec_cmd("rm -f " .. home .. "/.config/chromium/Singleton*")
 end)
 
 
