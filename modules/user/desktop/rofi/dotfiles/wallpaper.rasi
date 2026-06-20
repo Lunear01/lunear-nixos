@@ -1,7 +1,7 @@
 /* Wallpaper picker — 3x3 image-preview grid.
  * Entries are fed as "name\0icon\x1f/path/to/image" by wallpaper-picker.sh
  * so rofi renders each wallpaper thumbnail as the element icon. */
-@import "@home@/.cache/wal/colors-rofi.rasi"
+@import "@home@/.config/rofi/colors.rasi"
 
 configuration {
     show-icons:          true;

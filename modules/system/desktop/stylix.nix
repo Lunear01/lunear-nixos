@@ -4,12 +4,13 @@
 # up in the themes/ registry, where each theme is a self-contained directory
 # owning its palette + config. The selected theme's attrs are merged into
 # `stylix`, so a theme can override the cursor/icons/fonts defaults below (they
-# are mkDefault) by declaring its own. The five dynamic apps (kitty, waybar,
-# rofi, swaync, hyprland) stay wallust-driven; their Stylix targets are turned
-# off in modules/user/desktop/stylix.nix so nothing is themed twice.
+# are mkDefault) by declaring its own. kitty is themed by Stylix's native
+# target; waybar/rofi/swaync/hyprland keep custom dotfiles re-sourced from this
+# same base16 palette (see modules/user/desktop/stylix.nix and each module).
 #
-# Wallpaper is owned by awww/wallust, so `stylix.image` is intentionally unset
-# (a base16Scheme makes it optional). Edits here need a rebuild:
+# Wallpaper is owned by awww (set at runtime via the picker), so `stylix.image`
+# is intentionally unset (a base16Scheme makes it optional). Edits here need a
+# rebuild:
 #   sudo nixos-rebuild switch --flake /etc/nixos#lunear-nixos
 { pkgs, lib, config, systemSettings, ... }:
 

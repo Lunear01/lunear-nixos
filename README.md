@@ -64,9 +64,10 @@ Edits there take effect on the next `nrs`.
 
 Files that need the real home path are run through the shared `themed` helper
 (`modules/user/lib.nix`, exposed via `_module.args`), which substitutes `@home@`
-at build time. Runtime theming is unaffected: wallust writes its generated
-palette to `~/.cache/wal/`, which these configs `@import`/`include`, so
-re-theming the desktop still happens live without a rebuild.
+at build time. Colors come from the selected Stylix base16 theme: kitty uses
+Stylix's native target, while the custom-dotfile apps (waybar, rofi, swaync,
+hyprland) read a `colors.*` file generated from the shared `palette` helper
+(also in `modules/user/lib.nix`). Re-theming is `theme = "<name>";` + a rebuild.
 
 ## Adding things
 

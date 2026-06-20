@@ -6,5 +6,5 @@
   browser = "firefox";
   terminal = "kitty";
   editor = "vim";
-  theme = "everforest-dark-hard";
+  theme = "catppuccin-mocha";
 }

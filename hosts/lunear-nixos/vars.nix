@@ -5,5 +5,5 @@
   hostname = "lunear-nixos";
   system = "x86_64-linux";
   users = [ "lunear" ];
-  theme = "everforest-dark-hard";
+  theme = "catppuccin-mocha";
 }

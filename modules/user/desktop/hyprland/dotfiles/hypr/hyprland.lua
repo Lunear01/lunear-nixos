@@ -1,9 +1,10 @@
 local home = os.getenv("HOME") or ("/home/" .. (os.getenv("USER") or "user"))
 
 -- ───────────────────────────── COLOR THEMING ─────────────────────────────
--- Optional pywal integration: if ~/.cache/wal/colors-hyprland.lua exists it is
--- merged over these defaults. Out of the box, the fallback palette is used so
--- the config never fails to load on a fresh NixOS install.
+-- Stylix integration: if ~/.config/hypr/colors-hyprland.lua exists (generated
+-- from the selected base16 theme by hyprland/default.nix) it is merged over
+-- these defaults. Out of the box, the fallback palette is used so the config
+-- never fails to load on a fresh NixOS install.
 local palette = {
     foreground = "rgba(d6d6d6ff)",
     background = "rgba(0d0d0fff)",
@@ -18,7 +19,7 @@ local palette = {
     color9  = "rgba(8ab4ffff)",
 }
 
-local ok, generated = pcall(dofile, home .. "/.cache/wal/colors-hyprland.lua")
+local ok, generated = pcall(dofile, home .. "/.config/hypr/colors-hyprland.lua")
 if ok and type(generated) == "table" then
     for k, v in pairs(generated) do palette[k] = v end
 end
@@ -64,7 +65,7 @@ hl.on("hyprland.start", function()
     -- activates them (hyprland-session.target is defined in home.nix).
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     hl.exec_cmd("systemctl --user start hyprland-session.target")
-    -- Restore the last wallpaper and recolor the desktop from it (wallust).
+    -- Restore the last wallpaper (colors are static, from the Stylix theme).
     hl.exec_cmd(home .. "/.config/hypr/scripts/theme.sh")
 end)
 
@@ -87,7 +88,7 @@ hl.config({
 
         border_size = 2,
 
-        -- Animated pywal gradient border on the focused window.
+        -- Animated base16 gradient border on the focused window.
         col = {
             active_border   = { colors = { palette.color4, palette.color5, palette.color6 }, angle = 45 },
             inactive_border = palette.color8,

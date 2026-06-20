@@ -3,7 +3,7 @@
  * Entries are fed as "text\0icon\x1fcard.png" by cliphist-rofi.sh.
  * Cards (130×130 PNG with rounded corners + pango text) are pre-rendered by the script.
  **/
-@import "@home@/.cache/wal/colors-rofi.rasi"
+@import "@home@/.config/rofi/colors.rasi"
 
 * {
     accent:        @selected;

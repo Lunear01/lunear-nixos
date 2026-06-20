@@ -4,8 +4,9 @@
 # theme is just dropping a new themes/<name>/ folder — nothing to register.
 #
 # Selected via `theme = "<name>";` in a host or user vars.nix; the lookup happens
-# in modules/system/desktop/stylix.nix. Only re-skins the static Stylix base
-# layer — the wallust-driven apps keep recoloring per-wallpaper.
+# in modules/system/desktop/stylix.nix. The selected base16 palette is the single
+# color source for the whole desktop, including the custom-dotfile apps (waybar,
+# rofi, swaync, hyprland) which read it via their generated colors files.
 { pkgs }:
 
 # Pure-builtins on purpose: the theme *names* are read by the enum option type in
