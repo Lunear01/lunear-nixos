@@ -3,7 +3,7 @@
 # selectable: `lunear.theme.name` (default from systemSettings.theme) is looked
 # up in themes/default.nix. The five dynamic apps (kitty, waybar, rofi, swaync,
 # hyprland) stay wallust-driven; their Stylix targets are turned off in
-# modules/home/desktop/stylix.nix so nothing is themed twice.
+# modules/user/desktop/stylix.nix so nothing is themed twice.
 #
 # Wallpaper is owned by awww/wallust, so `stylix.image` is intentionally unset
 # (a base16Scheme makes it optional). Edits here need a rebuild:

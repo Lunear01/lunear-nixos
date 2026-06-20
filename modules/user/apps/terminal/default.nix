@@ -1,5 +1,5 @@
 # Choice-based terminal: pick one with `terminal = "...";` in users/<u>/vars.nix.
-# The selection drives the matching guarded module under modules/home/desktop/.
+# The selection drives the matching guarded module under modules/user/desktop/.
 { lib, config, userSettings, ... }:
 
 let

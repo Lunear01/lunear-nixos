@@ -1,7 +1,7 @@
 # Baseline home policy for any user on any machine: enables shell + dev tooling
 # and installs host-agnostic programs/packages. The browser/terminal/editor are
 # chosen by the lunear.{browser,terminal,editor} enums (default from
-# users/<u>/vars.nix). All home modules are auto-imported by modules/home; this
+# users/<u>/vars.nix). All user modules are auto-imported by modules/user; this
 # profile only flips on what the baseline wants.
 { pkgs, ... }:
 

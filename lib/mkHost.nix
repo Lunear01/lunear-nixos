@@ -22,7 +22,7 @@ lib.nixosSystem {
   modules = [
     inputs.nix-flatpak.nixosModules.nix-flatpak
     inputs.stylix.nixosModules.stylix
-    ../modules/nixos
+    ../modules/system
     ../hosts/${hostname}
     inputs.home-manager.nixosModules.home-manager
     {

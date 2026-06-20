@@ -2,16 +2,16 @@
 
 {
   imports = [
-    ../../modules/home          # auto-imports every home module (all guarded/off)
-    ../../profiles/home/base.nix
-    ../../profiles/home/desktops/hyprland.nix
+    ../../modules/user          # auto-imports every user (home) module (all guarded/off)
+    ../../profiles/user/base.nix
+    ../../profiles/user/desktops/hyprland.nix
   ];
 
   home.username = "lunear";
   home.homeDirectory = "/home/${config.home.username}";
   home.stateVersion = "26.05";
 
-  # Flatpak (user app list; system service lives in modules/nixos/desktop/flatpak.nix)
+  # Flatpak (user app list; system service lives in modules/system/desktop/flatpak.nix)
   services.flatpak = {
     remotes = [{
       name = "flathub";
