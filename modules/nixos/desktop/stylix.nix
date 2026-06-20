@@ -1,26 +1,34 @@
-# Stylix — static Everforest Dark Hard identity for everything Stylix can theme
-# (GTK, Qt, cursor, icons, fonts, console, Firefox, VSCode, vim, ...). The five
-# dynamic apps (kitty, waybar, rofi, swaync, hyprland) stay wallust-driven; their
-# Stylix targets are turned off in modules/home/desktop/stylix.nix so nothing is
-# themed twice.
+# Stylix — static base16 identity for everything Stylix can theme (GTK, Qt,
+# cursor, icons, fonts, console, Firefox, VSCode, vim, ...). The scheme is
+# selectable: `lunear.theme.name` (default from systemSettings.theme) is looked
+# up in themes/default.nix. The five dynamic apps (kitty, waybar, rofi, swaync,
+# hyprland) stay wallust-driven; their Stylix targets are turned off in
+# modules/home/desktop/stylix.nix so nothing is themed twice.
 #
 # Wallpaper is owned by awww/wallust, so `stylix.image` is intentionally unset
 # (a base16Scheme makes it optional). Edits here need a rebuild:
 #   sudo nixos-rebuild switch --flake /etc/nixos#lunear-nixos
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, systemSettings, ... }:
 
 let
-  cfg = config.lunear.theme.stylix;
+  cfg = config.lunear.theme;
+  themes = import ../../../themes { inherit pkgs; };
+  theme = themes.${cfg.name};
 in
 {
-  options.lunear.theme.stylix.enable =
-    lib.mkEnableOption "Stylix Everforest Dark Hard theming";
+  options.lunear.theme = {
+    stylix.enable = lib.mkEnableOption "Stylix base16 theming";
+    name = lib.mkOption {
+      type = lib.types.enum (lib.attrNames themes);
+      default = systemSettings.theme or "everforest-dark-hard";
+      description = "Named base16 theme for the Stylix base layer.";
+    };
+  };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.stylix.enable {
     stylix = {
       enable = true;
-      polarity = "dark";
-      base16Scheme = "${pkgs.base16-schemes}/share/themes/everforest-dark-hard.yaml";
+      inherit (theme) polarity base16Scheme;
 
       cursor = {
         package = pkgs.bibata-cursors;
