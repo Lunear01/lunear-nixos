@@ -11,7 +11,7 @@ mkdir -p "$cache_dir"
 # Font size is also doubled (18pt → 9pt visual) to match.
 card_w=260; card_h=260; radius=24; pad=16
 bg="#1a1a1a"; fg="#eef3f1"
-max_entries=63  # 7 columns; rofi scrolls vertically beyond that
+max_entries=14  # 7 columns; rofi scrolls vertically beyond that
 
 # XML-escape text for pango markup.
 pango_escape() {

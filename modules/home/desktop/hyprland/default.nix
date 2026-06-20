@@ -1,58 +1,66 @@
-{ pkgs, themed, ... }:
+{ pkgs, themed, lib, config, ... }:
 
+let
+  cfg = config.lunear.home.hyprland;
+in
 {
-  services.cliphist.enable = true;
-  services.playerctld.enable = true;
+  options.lunear.home.hyprland.enable =
+    lib.mkEnableOption "Hyprland session: wallust theming, dotfiles, and helper tools";
 
-  home.packages = with pkgs; [
-    # Theming
-    wallust
+  config = lib.mkIf cfg.enable {
+    services.cliphist.enable = true;
+    services.playerctld.enable = true;
 
-    # Desktop / Wayland
-    awww
-    hyprshell
-    hyprshot
-    nautilus
-    wl-clipboard
-    imagemagick
-    libnotify
-    pavucontrol
-    brightnessctl
-    overskride
-  ];
+    home.packages = with pkgs; [
+      # Theming
+      wallust
 
-  # Session target
-  systemd.user.targets.hyprland-session = {
-    Unit = {
-      Description = "Hyprland compositor session";
-      Documentation = [ "man:systemd.special(7)" ];
-      BindsTo = [ "graphical-session.target" ];
-      Before = [ "graphical-session.target" ];
-      Wants = [ "graphical-session-pre.target" ];
-      After = [ "graphical-session-pre.target" ];
+      # Desktop / Wayland
+      awww
+      hyprshell
+      hyprshot
+      nautilus
+      wl-clipboard
+      imagemagick
+      libnotify
+      pavucontrol
+      brightnessctl
+      overskride
+    ];
+
+    # Session target
+    systemd.user.targets.hyprland-session = {
+      Unit = {
+        Description = "Hyprland compositor session";
+        Documentation = [ "man:systemd.special(7)" ];
+        BindsTo = [ "graphical-session.target" ];
+        Before = [ "graphical-session.target" ];
+        Wants = [ "graphical-session-pre.target" ];
+        After = [ "graphical-session-pre.target" ];
+      };
     };
-  };
 
-  # Dotfiles
-  xdg.configFile = {
-    "hypr/hyprland.lua".source = ./dotfiles/hypr/hyprland.lua;
+    # Dotfiles
+    xdg.configFile = {
+      "hypr/hyprland.lua".source = ./dotfiles/hypr/hyprland.lua;
 
-    # Pywal-style theming via wallust: wallpaper -> palette -> every app.
-    "wallust/wallust.toml".source = themed ./dotfiles/wallust/wallust.toml;
-    "wallust/templates".source = ./dotfiles/wallust/templates;
+      # Pywal-style theming via wallust: wallpaper -> palette -> every app.
+      "wallust/wallust.toml".source = themed ./dotfiles/wallust/wallust.toml;
+      "wallust/templates".source = ./dotfiles/wallust/templates;
 
-    # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
-    "hypr/scripts/theme.sh" = {
-      source = ./dotfiles/scripts/theme.sh;
-      executable = true;
-    };
-    "hypr/scripts/wallpaper-picker.sh" = {
-      source = ./dotfiles/scripts/wallpaper-picker.sh;
-      executable = true;
-    };
-    "hypr/scripts/cliphist-rofi.sh" = {
-      source = ./dotfiles/scripts/cliphist-rofi.sh;
-      executable = true;
+      # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
+      "hypr/scripts/theme.sh" = {
+        source = ./dotfiles/scripts/theme.sh;
+        executable = true;
+      };
+      "hypr/scripts/wallpaper-picker.sh" = {
+        source = ./dotfiles/scripts/wallpaper-picker.sh;
+        executable = true;
+      };
+      "hypr/scripts/cliphist-rofi.sh" = {
+        source = ./dotfiles/scripts/cliphist-rofi.sh;
+        executable = true;
+      };
     };
   };
 }

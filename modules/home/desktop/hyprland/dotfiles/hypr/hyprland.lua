@@ -29,10 +29,10 @@ end
 ------------------
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
-    output   = "eDP-1",
+    output   = "eDP-2",
     mode     = "preferred", -- auto-detect the screen's native resolution
     position = "auto",
-    scale    = 1.25,
+    scale    = 1.6,
 })
 -- hl.monitor({ output = "DP-2", mode = "1920x1080@60", position = "1536x0", scale = 1.25 })
 
@@ -72,8 +72,8 @@ end)
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
-hl.env("XCURSOR_SIZE", "15")
-hl.env("HYPRCURSOR_SIZE", "15")
+hl.env("XCURSOR_SIZE", "18")
+hl.env("HYPRCURSOR_SIZE", "18")
 
 
 -----------------------
@@ -240,9 +240,11 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 -- Screen lock / suspend
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session && sleep 1 && systemctl suspend"))
 
--- Screenshots (hyprshot)
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region; pkill hyprpicker; pkill hyprshot"))
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m output"))
+-- Screenshots (hyprshot). Saved to $XDG_PICTURES_DIR (~/Pictures) + clipboard.
+-- region: drag-select an area. output: grab the focused monitor (-m active, so
+-- no slurp monitor-pick prompt — without it "output" cancels to no file).
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region"))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m output -m active"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))

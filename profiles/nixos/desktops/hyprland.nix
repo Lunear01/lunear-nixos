@@ -5,4 +5,5 @@
   imports = [ ../desktop.nix ];
 
   lunear.desktop.hyprland.enable = true;
+  lunear.theme.stylix.enable = true;
 }
