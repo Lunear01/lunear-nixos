@@ -1,17 +1,15 @@
-# Baseline home policy for any user on any machine: shell, dev tooling, and
-# host-agnostic programs/packages. Pulls in the shared `themed` helper.
+# Baseline home policy for any user on any machine: enables shell + dev tooling
+# and installs host-agnostic programs/packages. The browser/terminal/editor are
+# chosen by the lunear.{browser,terminal,editor} enums (default from
+# users/<u>/vars.nix). All home modules are auto-imported by modules/home; this
+# profile only flips on what the baseline wants.
 { pkgs, ... }:
 
 {
-  imports = [
-    ../../modules/home/lib.nix
-    ../../modules/home/shell/bash.nix
-    ../../modules/home/dev/default.nix
-  ];
+  lunear.home.bash.enable = true;
+  lunear.home.dev.enable = true;
 
   programs.fastfetch.enable = true;
-  programs.firefox.enable = true;
-  programs.vim.enable = true;
 
   fonts.fontconfig.enable = true;
 
@@ -25,7 +23,7 @@
     tree
     wget
 
-    # Browser Web app
+    # Browser Web app (PWA host; primary browser is the lunear.browser enum)
     chromium
 
     # VPN / networking

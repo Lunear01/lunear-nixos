@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../modules/home          # auto-imports every home module (all guarded/off)
     ../../profiles/home/base.nix
     ../../profiles/home/desktops/hyprland.nix
   ];
@@ -9,10 +10,6 @@
   home.username = "lunear";
   home.homeDirectory = "/home/${config.home.username}";
   home.stateVersion = "26.05";
-
-  home.sessionVariables = {
-    EDITOR = "vim";
-  };
 
   # Flatpak (user app list; system service lives in modules/nixos/desktop/flatpak.nix)
   services.flatpak = {
