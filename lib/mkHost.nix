@@ -41,7 +41,10 @@ lib.nixosSystem {
           _module.args.settings = settings // { username = u; };
         });
         backupFileExtension = "backup";
-        extraSpecialArgs = { inherit inputs; };
+        # hostname is a specialArg (available during `imports`, unlike the
+        # config-time `settings` _module.arg) so home.nix can pick a per-host
+        # profile without triggering infinite recursion.
+        extraSpecialArgs = { inherit inputs hostname; };
         sharedModules = [ inputs.nix-flatpak.homeManagerModules.nix-flatpak ];
       };
       # Pin the registry so `nix run nixpkgs#foo` uses the

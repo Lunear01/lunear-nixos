@@ -11,7 +11,7 @@
 # Wallpaper is owned by awww (set at runtime via the picker), so `stylix.image`
 # is intentionally unset (a base16Scheme makes it optional). Edits here need a
 # rebuild:
-#   sudo nixos-rebuild switch --flake /etc/nixos#lunear-nixos
+#   sudo nixos-rebuild switch --flake /etc/nixos#<hostname>   (e.g. rog-g14)
 { pkgs, lib, config, settings, ... }:
 
 let

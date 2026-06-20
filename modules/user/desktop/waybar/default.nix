@@ -1,7 +1,13 @@
-{ pkgs, palette, lib, config, ... }:
+{ pkgs, palette, settings, lib, config, ... }:
 
 let
   cfg = config.lunear.home.waybar;
+
+  # Per-host bar font size: GTK CSS has no numeric variables, so substitute the
+  # @barFontPx@ placeholder in style.css at build time from `settings`.
+  styleCss = pkgs.writeText "waybar-style.css"
+    (builtins.replaceStrings [ "@barFontPx@" ] [ (toString settings.barFontPx) ]
+      (builtins.readFile ./dotfiles/style.css));
 
   # Raw base16 palette in waybar's @-name vocabulary; style.css maps these onto
   # semantic names and @import-s this file (same dir, so a relative import works).
@@ -48,7 +54,7 @@ in
     xdg.configFile = {
       "waybar/config.jsonc".source = ./dotfiles/config.jsonc;
       "waybar/colors.css".source = colorsCss;
-      "waybar/style.css".source = ./dotfiles/style.css;
+      "waybar/style.css".source = styleCss;
     };
   };
 }

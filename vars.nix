@@ -17,4 +17,17 @@
   browser = "zen";
   terminal = "kitty";
   editor = "vscode";
+
+  # Per-host display tuning. These are the shared defaults; each machine
+  # overrides what differs in hosts/<name>/vars.nix.
+  #   monitor    -> primary output name (see `hyprctl monitors`)
+  #   scale      -> Hyprland fractional scale for that output
+  #   cursorSize -> XCURSOR_SIZE / HYPRCURSOR_SIZE
+  #   barFontPx  -> waybar font size (px)
+  #   rofiFontPt -> rofi font size (pt)
+  monitor = "eDP-1";
+  scale = 1.333;
+  cursorSize = 18;
+  barFontPx = 15;
+  rofiFontPt = 11;
 }

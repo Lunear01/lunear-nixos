@@ -24,16 +24,26 @@ if ok and type(generated) == "table" then
     for k, v in pairs(generated) do palette[k] = v end
 end
 
+-- ──────────────────────────── PER-HOST TUNING ────────────────────────────
+-- ~/.config/hypr/host-hyprland.lua is generated from `settings` per machine
+-- (monitor output, scale, cursor size) by hyprland/default.nix. Fallback values
+-- keep this config working on a fresh non-Nix run.
+local host = { monitor = { output = "eDP-1", scale = 1.0 }, cursorSize = 18 }
+local okh, ghost = pcall(dofile, home .. "/.config/hypr/host-hyprland.lua")
+if okh and type(ghost) == "table" then
+    for k, v in pairs(ghost) do host[k] = v end
+end
+
 
 ------------------
 ---- MONITORS ----
 ------------------
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
-    output   = "eDP-2",
+    output   = host.monitor.output,
     mode     = "preferred", -- auto-detect the screen's native resolution
     position = "auto",
-    scale    = 1.6,
+    scale    = host.monitor.scale,
 })
 -- hl.monitor({ output = "DP-2", mode = "1920x1080@60", position = "1536x0", scale = 1.25 })
 
@@ -73,8 +83,8 @@ end)
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
-hl.env("XCURSOR_SIZE", "18")
-hl.env("HYPRCURSOR_SIZE", "18")
+hl.env("XCURSOR_SIZE", tostring(host.cursorSize))
+hl.env("HYPRCURSOR_SIZE", tostring(host.cursorSize))
 
 
 -----------------------

@@ -1,7 +1,18 @@
-{ pkgs, paletteRaw, lib, config, ... }:
+{ pkgs, paletteRaw, settings, lib, config, ... }:
 
 let
   cfg = config.lunear.home.hyprland;
+
+  # Per-host display tuning from `settings` (monitor output, fractional scale,
+  # cursor size). hyprland.lua dofile()s this over its built-in fallback, exactly
+  # like colors-hyprland.lua — so the static dotfile stays host-agnostic.
+  hostLua = pkgs.writeText "host-hyprland.lua" ''
+    -- Generated from settings by hyprland/default.nix (per-host display tuning).
+    return {
+        monitor    = { output = "${settings.monitor}", scale = ${toString settings.scale} },
+        cursorSize = ${toString settings.cursorSize},
+    }
+  '';
 
   # Hyprland border palette in rgba(RRGGBBAA) form, from the selected Stylix
   # base16 theme. hyprland.lua dofile()s this over its built-in fallback palette.
@@ -69,6 +80,9 @@ in
 
       # Border palette from the selected Stylix base16 theme; dofile()d by hyprland.lua.
       "hypr/colors-hyprland.lua".source = colorsLua;
+
+      # Per-host monitor/scale/cursor; dofile()d by hyprland.lua.
+      "hypr/host-hyprland.lua".source = hostLua;
 
       # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
       "hypr/scripts/theme.sh" = {
