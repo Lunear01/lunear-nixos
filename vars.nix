@@ -1,13 +1,13 @@
-# Single source of truth for this NixOS config. Threaded to every module as the
-# `settings` arg: a specialArg for system modules, and per-user `_module.args`
-# for home modules (each user also gets its own `username`). `hostname` is
-# derived from the host directory name in lib/mkHost.nix, so it is not set here.
+# Shared settings for this NixOS config. Threaded to every module as the
+# `settings` arg: a specialArg for system modules, and an extraSpecialArg for
+# home modules. `hostname` is NOT set here — lib/mkHost.nix injects it from the
+# host name passed in flake.nix.
 #
-# Multi-host: this file holds the shared defaults. A host may override any field
-# by dropping a partial attrset in hosts/<name>/vars.nix (merged on top).
+# Multi-host: this file holds the shared defaults. flake.nix merges a host's
+# hosts/<name>/vars.nix on top (shared // host overrides), so a host only needs
+# to list the fields that differ.
 {
   system = "x86_64-linux";
-  users = [ "lunear" ];
 
   # Stylix base16 theme (see themes/).
   theme = "catppuccin-mocha";
