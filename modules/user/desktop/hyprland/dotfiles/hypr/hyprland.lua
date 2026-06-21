@@ -83,6 +83,8 @@ hl.on("hyprland.start", function()
     -- from rofi = invisible error). Safe: only runs at login, before any
     -- Chromium starts.
     hl.exec_cmd("rm -f " .. home .. "/.config/chromium/Singleton*")
+    -- fcitx5 input method daemon (Rime engine). --replace makes login idempotent.
+    hl.exec_cmd("fcitx5 -d --replace")
 end)
 
 
@@ -91,6 +93,11 @@ end)
 -------------------------------
 hl.env("XCURSOR_SIZE", tostring(host.cursorSize))
 hl.env("HYPRCURSOR_SIZE", tostring(host.cursorSize))
+
+-- Input method: GTK/Qt use the fcitx5 wayland text-input-v3 frontend directly,
+-- so GTK_IM_MODULE/QT_IM_MODULE are left UNSET (per fcitx5 Wayland guidance).
+-- XMODIFIERS stays for legacy X11/XWayland apps that lack a wayland frontend.
+hl.env("XMODIFIERS", "@im=fcitx")
 
 
 -----------------------

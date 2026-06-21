@@ -10,6 +10,7 @@
   lunear.desktop.graphics.enable = true;
   lunear.desktop.portal.enable = true;
   lunear.desktop.files.enable = true;
+  lunear.desktop.inputMethod.enable = true;
   lunear.services.flatpak.enable = true;
 
   # Hyprland compositor + theming.

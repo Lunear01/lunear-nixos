@@ -9,5 +9,6 @@
   lunear.home.waybar.enable = true;
   lunear.home.swaync.enable = true;
   lunear.home.hyprland.enable = true;
+  lunear.home.fcitx5.enable = true;
   lunear.home.stylixTargets.enable = true;
 }

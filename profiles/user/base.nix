@@ -29,6 +29,7 @@
     # VPN / networking
     wireguard-tools
     proton-vpn
+    
 
     # Fonts
     nerd-fonts.jetbrains-mono
