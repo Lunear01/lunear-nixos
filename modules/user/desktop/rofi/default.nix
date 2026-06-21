@@ -1,8 +1,6 @@
-{ pkgs, palette, themed, settings, lib, config, ... }:
+{ pkgs, palette, themed, settings, config, ... }:
 
 let
-  cfg = config.lunear.home.rofi;
-
   # Per-host launcher font size: substitute @rofiFontPt@ in theme.rasi from
   # `settings`, then run it through `themed` (which fills @home@ for the absolute
   # colors.rasi @import).
@@ -32,18 +30,14 @@ let
   '';
 in
 {
-  options.lunear.home.rofi.enable = lib.mkEnableOption "rofi launcher";
+  programs.rofi = {
+    enable = true;
+    theme = "${themeRasi}";
+  };
 
-  config = lib.mkIf cfg.enable {
-    programs.rofi = {
-      enable = true;
-      theme = "${themeRasi}";
-    };
-
-    xdg.configFile = {
-      "rofi/colors.rasi".source = colorsRasi;
-      "rofi/wallpaper.rasi".source = themed ./dotfiles/wallpaper.rasi;
-      "rofi/cliphist.rasi".source = themed ./dotfiles/cliphist.rasi;
-    };
+  xdg.configFile = {
+    "rofi/colors.rasi".source = colorsRasi;
+    "rofi/wallpaper.rasi".source = themed ./dotfiles/wallpaper.rasi;
+    "rofi/cliphist.rasi".source = themed ./dotfiles/cliphist.rasi;
   };
 }

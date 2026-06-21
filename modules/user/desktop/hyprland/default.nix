@@ -1,8 +1,6 @@
-{ pkgs, paletteRaw, settings, lib, config, ... }:
+{ pkgs, paletteRaw, settings, ... }:
 
 let
-  cfg = config.lunear.home.hyprland;
-
   # Per-host display tuning from `settings` (monitor output, fractional scale,
   # cursor size). hyprland.lua dofile()s this over its built-in fallback, exactly
   # like colors-hyprland.lua — so the static dotfile stays host-agnostic.
@@ -41,62 +39,57 @@ let
   '';
 in
 {
-  options.lunear.home.hyprland.enable =
-    lib.mkEnableOption "Hyprland session: Stylix theming, dotfiles, and helper tools";
+  services.cliphist.enable = true;
+  services.playerctld.enable = true;
 
-  config = lib.mkIf cfg.enable {
-    services.cliphist.enable = true;
-    services.playerctld.enable = true;
+  home.packages = with pkgs; [
+    # Desktop / Wayland
+    awww
+    hyprshell
+    hyprshot
+    nautilus
+    wl-clipboard
+    imagemagick
+    libnotify
+    pavucontrol
+    brightnessctl
+    overskride
+  ];
 
-    home.packages = with pkgs; [
-      # Desktop / Wayland
-      awww
-      hyprshell
-      hyprshot
-      nautilus
-      wl-clipboard
-      imagemagick
-      libnotify
-      pavucontrol
-      brightnessctl
-      overskride
-    ];
-
-    # Session target
-    systemd.user.targets.hyprland-session = {
-      Unit = {
-        Description = "Hyprland compositor session";
-        Documentation = [ "man:systemd.special(7)" ];
-        BindsTo = [ "graphical-session.target" ];
-        Before = [ "graphical-session.target" ];
-        Wants = [ "graphical-session-pre.target" ];
-        After = [ "graphical-session-pre.target" ];
-      };
+  # Session target
+  systemd.user.targets.hyprland-session = {
+    Unit = {
+      Description = "Hyprland compositor session";
+      Documentation = [ "man:systemd.special(7)" ];
+      BindsTo = [ "graphical-session.target" ];
+      Before = [ "graphical-session.target" ];
+      Wants = [ "graphical-session-pre.target" ];
+      After = [ "graphical-session-pre.target" ];
     };
+  };
 
-    # Dotfiles
-    xdg.configFile = {
-      "hypr/hyprland.lua".source = ./dotfiles/hypr/hyprland.lua;
+  # Dotfiles
+  xdg.configFile = {
+    "hypr/hyprland.lua".source = ./dotfiles/hypr/hyprland.lua;
 
-      # Border palette from the selected Stylix base16 theme; dofile()d by hyprland.lua.
-      "hypr/colors-hyprland.lua".source = colorsLua;
+    # Border palette from the selected Stylix base16 theme; dofile()d by hyprland.lua.
+    "hypr/colors-hyprland.lua".source = colorsLua;
 
-      # Per-host monitor/scale/cursor; dofile()d by hyprland.lua.
-      "hypr/host-hyprland.lua".source = hostLua;
+    # Per-host monitor/scale/cursor; dofile()d by hyprland.lua.
+    "hypr/host-hyprland.lua".source = hostLua;
 
-      # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
-      "hypr/scripts/theme.sh" = {
-        source = ./dotfiles/scripts/theme.sh;
-        executable = true;
-      };
-      "hypr/scripts/wallpaper-picker.sh" = {
-        source = ./dotfiles/scripts/wallpaper-picker.sh;
-        executable = true;
-      };
-      "hypr/scripts/cliphist-rofi.sh" = {
-        source = ./dotfiles/scripts/cliphist-rofi.sh;
-        executable = true;
-      };
+    # Scripts are exec'd directly (see hypr/hyprland.lua), so keep +x.
+    "hypr/scripts/theme.sh" = {
+      source = ./dotfiles/scripts/theme.sh;
+      executable = true;
+    };
+    "hypr/scripts/wallpaper-picker.sh" = {
+      source = ./dotfiles/scripts/wallpaper-picker.sh;
+      executable = true;
+    };
+    "hypr/scripts/cliphist-rofi.sh" = {
+      source = ./dotfiles/scripts/cliphist-rofi.sh;
+      executable = true;
     };
   };
 }

@@ -1,16 +1,7 @@
-# Baseline home policy for any user on any machine: enables shell + dev tooling
-# and installs host-agnostic programs/packages. The browser/terminal/editor are
-# chosen by the lunear.{browser,terminal,editor} enums (default from
-# users/<u>/vars.nix). All user modules are auto-imported by modules/user; this
-# profile only flips on what the baseline wants.
 { pkgs, ... }:
 
 {
-  lunear.home.bash.enable = true;
-  lunear.home.dev.enable = true;
-
   programs.fastfetch.enable = true;
-
   fonts.fontconfig.enable = true;
 
   xdg.userDirs = {
@@ -18,18 +9,23 @@
     createDirectories = true;
   };
 
+  # Editor: VSCode (program enabled in the dev module).
+  home.sessionVariables.EDITOR = "code --wait";
+
+  # Browser: Zen, shipped as a Flathub flatpak (remote declared in home.nix).
+  services.flatpak.packages = [ "app.zen_browser.zen" ];
+
   home.packages = with pkgs; [
     # CLI utilities
     tree
     wget
 
-    # Browser Web app (PWA host; primary browser is the lunear.browser enum)
+    # Browser web-app host (PWA host; primary browser is Zen above)
     chromium
 
     # VPN / networking
     wireguard-tools
     proton-vpn
-    
 
     # Fonts
     nerd-fonts.jetbrains-mono

@@ -1,8 +1,6 @@
-{ pkgs, palette, settings, lib, config, ... }:
+{ pkgs, palette, settings, ... }:
 
 let
-  cfg = config.lunear.home.waybar;
-
   # Per-host bar font size: GTK CSS has no numeric variables, so substitute the
   # @barFontPx@ placeholder in style.css at build time from `settings`.
   styleCss = pkgs.writeText "waybar-style.css"
@@ -35,26 +33,22 @@ let
   '';
 in
 {
-  options.lunear.home.waybar.enable = lib.mkEnableOption "waybar status bar";
+  programs.waybar = {
+    enable = true;
+    systemd.enable = true;
+  };
 
-  config = lib.mkIf cfg.enable {
-    programs.waybar = {
-      enable = true;
-      systemd.enable = true;
+  systemd.user.services.waybar = {
+    Unit.StartLimitIntervalSec = 0;
+    Service = {
+      Restart = "on-failure";
+      RestartSec = 2;
     };
+  };
 
-    systemd.user.services.waybar = {
-      Unit.StartLimitIntervalSec = 0;
-      Service = {
-        Restart = "on-failure";
-        RestartSec = 2;
-      };
-    };
-
-    xdg.configFile = {
-      "waybar/config.jsonc".source = ./dotfiles/config.jsonc;
-      "waybar/colors.css".source = colorsCss;
-      "waybar/style.css".source = styleCss;
-    };
+  xdg.configFile = {
+    "waybar/config.jsonc".source = ./dotfiles/config.jsonc;
+    "waybar/colors.css".source = colorsCss;
+    "waybar/style.css".source = styleCss;
   };
 }

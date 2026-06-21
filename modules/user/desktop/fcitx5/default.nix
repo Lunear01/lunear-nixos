@@ -1,8 +1,6 @@
-{ pkgs, palette, lib, config, ... }:
+{ pkgs, palette, config, ... }:
 
 let
-  cfg = config.lunear.home.fcitx5;
-
   # Candidate-window font. Follows the active Stylix sans-serif; the system
   # i18n module installs Noto Sans CJK so Han glyphs resolve via fontconfig.
   fontName = config.stylix.fonts.sansSerif.name or "Noto Sans";
@@ -123,11 +121,6 @@ let
   '';
 in
 {
-  options.lunear.home.fcitx5.enable =
-    lib.mkEnableOption "Stylix-themed fcitx5 candidate window (rounded, horizontal)";
-
-  config = lib.mkIf cfg.enable {
-    xdg.dataFile."fcitx5/themes/stylix".source = themeDir;
-    xdg.configFile."fcitx5/conf/classicui.conf".source = classicuiConf;
-  };
+  xdg.dataFile."fcitx5/themes/stylix".source = themeDir;
+  xdg.configFile."fcitx5/conf/classicui.conf".source = classicuiConf;
 }
