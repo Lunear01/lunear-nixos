@@ -6,7 +6,7 @@
 # cursor/icons/fonts defaults below (they are mkDefault) by declaring its
 # own. kitty is themed by Stylix's native target; waybar/rofi/swaync/hyprland
 # keep custom dotfiles re-sourced from this same base16 palette (see
-# modules/user/desktop/stylix.nix and each module).
+# modules/home/stylix-targets.nix and each module).
 #
 # Wallpaper is owned by awww (set at runtime via the picker), so `stylix.image`
 # is intentionally unset (a base16Scheme makes it optional). Edits here need a

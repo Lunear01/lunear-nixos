@@ -1,103 +1,118 @@
 # lunear-nixos
 
-Personal NixOS configuration — a flake-based, modular setup with Home Manager,
-running Hyprland on Wayland. Structured so new hosts, desktops, and users are a
-few small edits rather than a copy-paste of the whole config.
+Personal NixOS flake — Hyprland on Wayland, two hosts (rog-g14, thinkpad-t14),
+Home Manager integrated. The config is flat: shared behaviour lives in two
+baseline files, per-host overrides live in `hosts/<name>/`, and every feature is
+a plain module you enable by importing.
 
 ## Layout
 
 ```
-flake.nix            # inputs + auto-discovers every hosts/<host>/
-lib/mkHost.nix       # nixosSystem factory (reads host vars, wires HM, pins registry)
-lib/importAll.nix    # recursive .nix importer used by the module trees
-themes/              # named base16 themes for the Stylix base layer
-hosts/<host>/        # machine (everything in one dir): vars.nix + hardware-configuration.nix
-                     #   + default.nix (system, picks profiles) + home.nix (per-host user tweaks)
-profiles/            # policy: aggregate modules and flip their enables
-  ├── system/        #   hyprland.nix
-  └── user/          #   base.nix, hyprland.nix
-modules/             # mechanism: one feature per module (auto-imported, option-guarded)
-  ├── system/        #   core/* (always on) + desktop/* (lunear.* enable, default off)
-  └── user/          #   shell, dev, apps/<enum>, desktop/<app>/ (+ dotfiles/)
-users/<user>/        # user: NixOS account (default.nix) + vars.nix + HM identity (home.nix)
+flake.nix                  # lists both hosts explicitly; merges shared + per-host vars
+vars.nix                   # shared settings: username, theme, fonts, default display tuning
+common-system.nix          # shared NixOS baseline — imports the system modules you want
+common-home.nix            # shared Home Manager baseline — imports the home modules you want
+modules/
+  system/                  # NixOS modules (audio, bluetooth, hyprland, stylix, …)
+  home/                    # Home Manager modules (bash, dev, kitty, rofi, waybar, …)
+hosts/
+  rog-g14/
+    configuration.nix      # host system config (imports common-system.nix + hardware)
+    hardware-configuration.nix
+    home.nix               # host home config (imports common-home.nix)
+    vars.nix               # host-specific overrides (scale, fonts, display tuning)
+  thinkpad-t14/            # same structure
+themes/                    # base16 theme registry — one subdir per theme
+  default.nix              # auto-discovers all theme subdirs
+  catppuccin-mocha/        # example: palette (colors.yaml) + Stylix config (default.nix)
+  …
+users/
+  lunear.nix               # NixOS user account definition
 ```
 
-`system` = machine-wide (NixOS) layer; `user` = per-user (Home Manager) layer.
-The same split names the module trees and the profiles, so it's obvious which
-side a file belongs to.
+### How it fits together
 
-The four layers:
+`flake.nix` builds each host by merging `vars.nix` (shared) with
+`hosts/<name>/vars.nix` (host-specific), then passing the merged `settings` to
+`common-system.nix` and `hosts/<name>/configuration.nix` on the NixOS side, and
+to `common-home.nix` and `hosts/<name>/home.nix` on the Home Manager side.
 
-| Layer | Role |
-|-------|------|
-| **`modules/`** | *Mechanism.* One feature per module. Both trees are blanket-imported via `lib/importAll.nix` and every module is option-guarded (`lunear.<area>.<feat>.enable`, default off) or choice-driven (`lunear.{browser,terminal,editor}`), so importing everything is safe — nothing activates until a profile flips it on. Drop a `.nix` file in, it's picked up. |
-| **`profiles/`** | *Policy.* Aggregate module sets and turn features on (e.g. `profiles/system/hyprland.nix` enables the graphical baseline + Hyprland; `profiles/user/hyprland.nix` flips on the rice). |
-| **`hosts/`** | *Identity.* Everything about one machine lives in `hosts/<host>/`: `default.nix` picks profiles + owns `hardware-configuration.nix` and `system.stateVersion`; `vars.nix` holds per-machine settings (hostname, users, theme); optional `home.nix` adds per-host user tweaks (auto-imported by `users/<u>/home.nix`). |
-| **`users/`** | *User.* `default.nix` is the NixOS account; `vars.nix` is the per-user settings (username, browser/terminal/editor, theme); `home.nix` is the Home Manager identity and the profiles it wants. |
+Modules under `modules/system/` and `modules/home/` are plain Nix files — each
+one enables exactly one feature. **Importing it is what enables it.** The
+`common-*.nix` files contain the import lists, so adding a module is just one
+import line there.
 
-### Settings (`vars.nix`)
+## How do I…
 
-Per-machine and per-user choices are plain-data attrsets, the single source of
-truth threaded to every module:
+### Add a new system module
 
-- `hosts/<host>/vars.nix` → `systemSettings` (hostname, system, users, theme)
-- `users/<user>/vars.nix` → `userSettings` (username, browser, terminal, editor, theme)
+1. Create `modules/system/myfeature.nix` (a normal `{ pkgs, lib, config, ... }:` module).
+2. Add one line to `common-system.nix` imports:
+   ```nix
+   ./modules/system/myfeature.nix
+   ```
+3. Rebuild: `sudo nixos-rebuild switch --flake /etc/nixos#<hostname>` (or `nrs`).
 
-Switching a theme or browser is a one-word edit there; the `lunear.theme.name`
-and `lunear.{browser,terminal,editor}` options default from these.
+### Add a new home (user) module
 
-## Applying changes
+1. Create `modules/home/myfeature.nix`.
+2. Add one line to `common-home.nix` imports:
+   ```nix
+   ./modules/home/myfeature.nix
+   ```
+3. Rebuild as above.
+
+### Change the theme
+
+Edit `vars.nix` (the shared one at the repo root):
+
+```nix
+theme = "catppuccin-mocha";  # any dir name under themes/
+```
+
+Valid names are the subdirectory names under `themes/` (e.g. `dracula`, `nord`,
+`rose-pine`, `tokyo-night-dark`, …). Rebuild to apply.
+
+### Tune a host's display (scale, fonts, DPI)
+
+Edit `hosts/<name>/vars.nix`. That file holds per-host overrides for display
+scale, font sizes, and similar hardware-specific settings. Changes apply on the
+next rebuild.
+
+### Rebuild
 
 ```bash
-nrs   # alias for: sudo nixos-rebuild --flake /etc/nixos#<hostname> switch
+sudo nixos-rebuild switch --flake /etc/nixos#<hostname>
+# or use the shell alias:
+nrs
 ```
 
-User programs and services are managed declaratively under `modules/user`
-(`programs.*` / `services.*`) rather than as bare packages, so their config is
-reproducible.
+Replace `<hostname>` with `rog-g14` or `thinkpad-t14`.
 
-## Hyprland config
+## Adding a new host
 
-Desktop dotfiles live under their owning user module's `dotfiles/` directory
-(e.g. `modules/user/desktop/waybar/dotfiles/`). They're deployed declaratively
-via `xdg.configFile`, copied into the Nix store and symlinked into `~/.config/`.
-Edits there take effect on the next `nrs`.
-
-Files that need the real home path are run through the shared `themed` helper
-(`modules/user/lib.nix`, exposed via `_module.args`), which substitutes `@home@`
-at build time. Colors come from the selected Stylix base16 theme: kitty uses
-Stylix's native target, while the custom-dotfile apps (waybar, rofi, swaync,
-hyprland) read a `colors.*` file generated from the shared `palette` helper
-(also in `modules/user/lib.nix`). Re-theming is `theme = "<name>";` + a rebuild.
-
-## Adding things
-
-- **A new host:** add a `hosts/<hostname>/` dir with `vars.nix` (settings),
-  `hardware-configuration.nix`, and a `default.nix` importing the profiles it
-  wants (optionally a `home.nix` for per-host user tweaks). `flake.nix` discovers
-  it automatically — no flake edit.
-- **A new user:** add `users/<user>/{default.nix,vars.nix,home.nix}` and list the
-  username in the host's `vars.nix` `users`.
-- **A headless server:** a `hosts/<server>/` whose `default.nix` imports no
-  desktop profile — every `lunear.desktop.*` stays off, only `core/*` applies.
-- **A new module:** drop a `.nix` file under `modules/system/` or `modules/user/`;
-  the recursive importer picks it up. Guard it with `lunear.*.enable` (and flip it
-  on in a profile) so it stays inert until wanted.
+1. Create `hosts/<newhostname>/` with:
+   - `vars.nix` — host-specific settings (hostname, display scale, etc.)
+   - `hardware-configuration.nix` — generated by `sudo nixos-generate-config`
+   - `configuration.nix` — imports `common-system.nix` + hardware + any host extras
+   - `home.nix` — imports `common-home.nix` + any host extras
+2. Add an entry in `flake.nix` under `nixosConfigurations`.
+3. Rebuild: `sudo nixos-rebuild switch --flake /etc/nixos#<newhostname>`
 
 ## Reinstalling on a new machine
 
 ```bash
 # After a minimal NixOS install:
-sudo nixos-generate-config                  # initial hardware config
+sudo nixos-generate-config          # note the hardware config output path
 sudo rm -rf /etc/nixos
 sudo git clone https://github.com/Lunear01/lunear-nixos.git /etc/nixos
 
 # Regenerate hardware config for THIS machine (disk UUIDs differ):
 sudo nixos-generate-config --show-hardware-config \
-  > /etc/nixos/hosts/lunear-nixos/hardware-configuration.nix
+  > /etc/nixos/hosts/<hostname>/hardware-configuration.nix
 
-sudo nixos-rebuild switch --flake /etc/nixos#lunear-nixos
+sudo nixos-rebuild switch --flake /etc/nixos#<hostname>
 ```
 
-> ⚠️ Always regenerate `hardware-configuration.nix` on new hardware — the
+> Always regenerate `hardware-configuration.nix` on new hardware — the
 > committed copy is specific to the original machine and may prevent boot.
