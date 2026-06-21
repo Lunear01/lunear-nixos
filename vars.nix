@@ -12,11 +12,8 @@
   # Stylix base16 theme (see themes/).
   theme = "catppuccin-mocha";
 
-  # Primary user + choice-based app modules (browser/terminal/editor enums).
+  # Primary user.
   username = "lunear";
-  browser = "zen";
-  terminal = "kitty";
-  editor = "vscode";
 
   # Per-host display tuning. These are the shared defaults; each machine
   # overrides what differs in hosts/<name>/vars.nix.

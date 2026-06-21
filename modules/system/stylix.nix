@@ -15,7 +15,7 @@
 { pkgs, lib, settings, ... }:
 
 let
-  themes = import ../../../themes { inherit pkgs; };
+  themes = import ../../themes { inherit pkgs; };
   theme = themes.${settings.theme};
 in
 {

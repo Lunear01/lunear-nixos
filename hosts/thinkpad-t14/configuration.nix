@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../profiles/system/hyprland.nix
+    ../../common-system.nix
     ./hardware-configuration.nix
   ];
 
