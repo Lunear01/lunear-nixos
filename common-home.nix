@@ -2,7 +2,7 @@
 # Every module here applies unconditionally — to stop using one, remove its
 # import line. `settings` is an extraSpecialArg (see lib/mkHost.nix);
 # palette/paletteRaw/themed come from ./modules/home/palette.nix.
-{ pkgs, settings, ... }:
+{ pkgs, settings, inputs, ... }:
 
 {
   imports = [
@@ -16,13 +16,13 @@
     ./modules/home/hyprland
     ./modules/home/rofi
     ./modules/home/fcitx5
+    ./modules/home/fastfetch
   ];
 
   home.username = settings.username;
   home.homeDirectory = "/home/${settings.username}";
   home.stateVersion = "26.05";
 
-  programs.fastfetch.enable = true;
   fonts.fontconfig.enable = true;
 
   xdg.userDirs = {
