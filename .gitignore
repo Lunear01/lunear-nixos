@@ -1,7 +1,12 @@
+# Nix build artifacts
 result
 result-*
 .direnv/
+
+# Claude Code / TheoryY workflow scaffolding — not part of the system config
 .claude/
 CLAUDE.md
+.superpowers/
 action-plans/
 ROADMAP.md
+docs/superpowers/
