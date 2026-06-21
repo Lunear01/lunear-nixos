@@ -8,5 +8,6 @@
   home.packages = with pkgs; [
     # Gaming / GPU-box extras, e.g. mangohud, lutris
     obsidian
+    discord
   ];
 }
