@@ -1,5 +1,4 @@
-# ThinkPad T14 overrides on top of the repo-root vars.nix. Only the fields that
-# differ from the shared defaults belong here.
+# ThinkPad T14 overrides on vars.nix — only fields that differ from shared defaults.
 {
   monitor = "eDP-1";
   scale = 1.333;

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -6,15 +6,8 @@
     ./hardware-configuration.nix
   ];
 
-  # ── ThinkPad T14-specific system bits ─────────────────────────────────────
-  # Battery/thermal management tuned for the laptop.
+  # tlp: battery/thermal management for the laptop.
   services.tlp.enable = true;
 
-  # Host-only system packages.
-  environment.systemPackages = with pkgs; [
-    # powertop
-  ];
-
-  # Per-install; set once at install time and never bumped.
   system.stateVersion = "26.05";
 }

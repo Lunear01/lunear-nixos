@@ -4,7 +4,6 @@
   nixpkgs.config.allowUnfree = true;
 
   nix = {
-
     # Flakes only
     channel.enable = false;
 

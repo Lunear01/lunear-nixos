@@ -1,7 +1,6 @@
-# nixosSystem factory. Takes a hostname and the merged settings; injects
-# `hostname` into settings, threads `settings` to every module (system as a
-# specialArg, home via extraSpecialArgs), and wires home-manager for the one
-# user. flake.nix lists hosts explicitly and does the vars merge.
+# nixosSystem factory: injects `hostname` into settings, threads `settings` to
+# every module (system via specialArg, home via extraSpecialArgs), and wires
+# home-manager for the user. flake.nix lists hosts and does the vars merge.
 { inputs }:
 
 { hostname, settings }:

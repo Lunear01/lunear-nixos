@@ -1,5 +1,4 @@
-# ROG G14 overrides on top of the repo-root vars.nix. Only the fields that
-# differ from the shared defaults belong here.
+# ROG G14 overrides on vars.nix — only fields that differ from shared defaults.
 {
   monitor = "eDP-2";
   scale = 1.6;

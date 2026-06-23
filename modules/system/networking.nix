@@ -4,7 +4,7 @@
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
-     # ProtonVPN requirement
+    # ProtonVPN requirement
     checkReversePath = false;
   };
 }

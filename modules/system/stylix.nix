@@ -1,17 +1,10 @@
-# Stylix — static base16 identity for everything Stylix can theme (GTK, Qt,
-# cursor, icons, fonts, console, Firefox, VSCode, vim, ...). The theme is
-# looked up in the themes/ registry via settings.theme, where each theme is
-# a self-contained directory owning its palette + config. The selected
-# theme's attrs are merged into `stylix`, so a theme can override the
-# cursor/icons/fonts defaults below (they are mkDefault) by declaring its
-# own. kitty is themed by Stylix's native target; waybar/rofi/swaync/hyprland
-# keep custom dotfiles re-sourced from this same base16 palette (see
-# modules/home/stylix-targets.nix and each module).
-#
-# Wallpaper is owned by awww (set at runtime via the picker), so `stylix.image`
-# is intentionally unset (a base16Scheme makes it optional). Edits here need a
-# rebuild:
-#   sudo nixos-rebuild switch --flake /etc/nixos#<hostname>   (e.g. rog-g14)
+# Stylix — base16 identity for everything Stylix themes (GTK, Qt, cursor,
+# icons, fonts, console, Firefox, VSCode, ...). settings.theme picks a theme
+# from the themes/ registry; its attrs merge over the mkDefault defaults
+# below, so a theme can override cursor/icons/fonts. kitty uses Stylix's
+# native target; waybar/rofi/swaync/hyprland re-source the same palette via
+# their own dotfiles. Wallpaper is owned by awww at runtime, so stylix.image
+# is intentionally unset (base16Scheme makes it optional).
 { pkgs, lib, settings, ... }:
 
 let

@@ -1,17 +1,12 @@
-# Exposes `themed` and the Stylix-derived color `palette` to every home module via
-# _module.args.
+# Exposes `themed`, `palette`, and `paletteRaw` to every home module via
+# _module.args (lazy — only forced by the desktop modules that consume them).
 #
-# `themed` copies a repo dotfile into the store, substituting @home@ with the real
-# home directory so nothing hardcodes a username/path.
+#   themed     -> copies a dotfile into the store, filling @home@ with the real home dir
+#   palette    -> base16 -> 16-color map, "#rrggbb"  (CSS / rasi)
+#   paletteRaw -> same, "rrggbb"   (Hyprland rgba(RRGGBBAA))
 #
-# `palette` / `paletteRaw` are the standard base16 -> 16-color terminal mapping,
-# built from the selected Stylix theme (`config.lib.stylix.colors`). They are the
-# single color source for the custom-dotfile desktop apps (waybar, swaync, rofi,
-# hyprland) now that wallust is gone. Both are lazy `_module.args`, so they are
-# only forced by the desktop modules that consume them — which are only enabled
-# alongside Stylix — keeping non-Stylix hosts unaffected.
-#   palette    -> "#rrggbb"  (CSS / rasi)
-#   paletteRaw -> "rrggbb"   (Hyprland rgba(RRGGBBAA))
+# palette/paletteRaw are the single color source for the custom-dotfile apps
+# (waybar, swaync, rofi, hyprland), built from the selected Stylix theme.
 { config, pkgs, ... }:
 
 let
